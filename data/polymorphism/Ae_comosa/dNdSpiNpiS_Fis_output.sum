@@ -1,0 +1,39 @@
+################################################################################
+#                              Biological Summary                              #
+################################################################################
+
+Selected ingroup species: Ae_comosa
+
+Number of analyzed individual: 2 (from 1 population(s))
+
+Total number of contig used for sequence analysis: 14823
+
+Total number of SNPs: 25517
+
+  - Biallelic: 25487
+  - Triallelic: 30
+  - Quadriallelic: 0
+
+Fit:
+
+Average Fit: 0.752989 [0.736883; 0.768376]
+(Fit calculated in 5581 contigs)
+
+Weir & Cockerham Fit (Evolution 1984):
+
+Average Weir & Cockerham Fit: 0.877277 [0.866598; 0.88747]
+(Fit calculated in 5581 contigs)
+
+piN/piS ratio:
+
+Average piS in focal species: 0.00373764 [0.00356; 0.00392]
+Average piN in focal species: 0.000477718 [0.000456; 0.0005]
+Average piN / average piS: 0.127813 [0.122007; 0.133869]
+(piS and piN calculated in 14823 contigs of average length 297)
+
+Individual heterozygosity:
+
+H(Tr271): 8.61778e-05
+H(Tr272): 0.000338216
+
+

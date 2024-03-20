@@ -1,0 +1,40 @@
+################################################################################
+#                              Biological Summary                              #
+################################################################################
+
+Selected ingroup species: Ae_bicornis
+
+Number of analyzed individual: 3 (from 1 population(s))
+
+Total number of contig used for sequence analysis: 19068
+
+Total number of SNPs: 20892
+
+  - Biallelic: 20871
+  - Triallelic: 21
+  - Quadriallelic: 0
+
+Fit:
+
+Average Fit: 0.914242 [0.905944; 0.922444]
+(Fit calculated in 6140 contigs)
+
+Weir & Cockerham Fit (Evolution 1984):
+
+Average Weir & Cockerham Fit: 0.940332 [0.933661; 0.946745]
+(Fit calculated in 6140 contigs)
+
+piN/piS ratio:
+
+Average piS in focal species: 0.00182604 [0.001727; 0.001927]
+Average piN in focal species: 0.000332529 [0.000317; 0.000348]
+Average piN / average piS: 0.182104 [0.173142; 0.191363]
+(piS and piN calculated in 19068 contigs of average length 281)
+
+Individual heterozygosity:
+
+H(Tr406): 8.87371e-05
+H(Tr407): 2.91441e-05
+H(Tr408): 3.27482e-05
+
+

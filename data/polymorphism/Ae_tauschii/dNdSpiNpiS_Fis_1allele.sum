@@ -1,0 +1,58 @@
+################################################################################
+#                              Biological Summary                              #
+################################################################################
+
+Selected ingroup species: Ae_tauschii
+
+Number of analyzed individual: 21 (from 1 population(s))
+
+Total number of contig used for sequence analysis: 18058
+
+Total number of SNPs: 71997
+
+  - Biallelic: 71803
+  - Triallelic: 194
+  - Quadriallelic: 0
+
+Fit:
+
+Average Fit: -nan [-2147.48; -2147.48]
+(Fit calculated in 0 contigs)
+
+Weir & Cockerham Fit (Evolution 1984):
+
+Average Weir & Cockerham Fit: -nan [-2147.48; -2147.48]
+(Fit calculated in 0 contigs)
+
+piN/piS ratio:
+
+Average piS in focal species: 0.00342351 [0.003328; 0.003522]
+Average piN in focal species: 0.000680419 [0.000664; 0.000696]
+Average piN / average piS: 0.198749 [0.192614; 0.204987]
+(piS and piN calculated in 17408 contigs of average length 217)
+
+Individual heterozygosity:
+
+H(Tr111): -nan
+H(Tr114): -nan
+H(Tr116): -nan
+H(Tr119): -nan
+H(Tr121): -nan
+H(Tr125): -nan
+H(Tr126): -nan
+H(Tr143): -nan
+H(Tr150): -nan
+H(Tr172): -nan
+H(Tr175): -nan
+H(Tr180): -nan
+H(Tr28): -nan
+H(Tr292): -nan
+H(Tr294): -nan
+H(Tr296): -nan
+H(Tr300): -nan
+H(Tr301): -nan
+H(Tr302): -nan
+H(Tr351): -nan
+H(Tr352): -nan
+
+

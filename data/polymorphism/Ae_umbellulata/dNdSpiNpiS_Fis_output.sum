@@ -1,0 +1,40 @@
+################################################################################
+#                              Biological Summary                              #
+################################################################################
+
+Selected ingroup species: Ae_umbellulata
+
+Number of analyzed individual: 3 (from 1 population(s))
+
+Total number of contig used for sequence analysis: 14620
+
+Total number of SNPs: 20261
+
+  - Biallelic: 20241
+  - Triallelic: 19
+  - Quadriallelic: 1
+
+Fit:
+
+Average Fit: 0.737707 [0.722598; 0.752066]
+(Fit calculated in 5638 contigs)
+
+Weir & Cockerham Fit (Evolution 1984):
+
+Average Weir & Cockerham Fit: 0.842393 [0.829052; 0.854698]
+(Fit calculated in 5638 contigs)
+
+piN/piS ratio:
+
+Average piS in focal species: 0.00229462 [0.002166; 0.002428]
+Average piN in focal species: 0.000359754 [0.000344; 0.000376]
+Average piN / average piS: 0.156781 [0.148941; 0.165286]
+(piS and piN calculated in 14620 contigs of average length 290)
+
+Individual heterozygosity:
+
+H(Tr257): 4.90973e-05
+H(Tr266): 0.00034753
+H(Tr268): 5.7974e-05
+
+

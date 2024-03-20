@@ -1,0 +1,57 @@
+################################################################################
+#                              Biological Summary                              #
+################################################################################
+
+Selected ingroup species: T_urartu
+
+Number of analyzed individual: 20 (from 1 population(s))
+
+Total number of contig used for sequence analysis: 18937
+
+Total number of SNPs: 45728
+
+  - Biallelic: 45638
+  - Triallelic: 90
+  - Quadriallelic: 0
+
+Fit:
+
+Average Fit: -nan [-2147.48; -2147.48]
+(Fit calculated in 0 contigs)
+
+Weir & Cockerham Fit (Evolution 1984):
+
+Average Weir & Cockerham Fit: -nan [-2147.48; -2147.48]
+(Fit calculated in 0 contigs)
+
+piN/piS ratio:
+
+Average piS in focal species: 0.00194943 [0.001871; 0.002034]
+Average piN in focal species: 0.000406354 [0.000394; 0.000418]
+Average piN / average piS: 0.208447 [0.19931; 0.217331]
+(piS and piN calculated in 18214 contigs of average length 217)
+
+Individual heterozygosity:
+
+H(Tr206): -nan
+H(Tr207): -nan
+H(Tr212): -nan
+H(Tr232): -nan
+H(Tr235): -nan
+H(Tr245): -nan
+H(Tr246): -nan
+H(Tr26): -nan
+H(Tr304): -nan
+H(Tr306): -nan
+H(Tr307): -nan
+H(Tr309): -nan
+H(Tr312): -nan
+H(Tr315): -nan
+H(Tr317): -nan
+H(Tr318): -nan
+H(Tr347): -nan
+H(Tr348): -nan
+H(Tr349): -nan
+H(Tr350): -nan
+
+

@@ -1,0 +1,41 @@
+################################################################################
+#                              Biological Summary                              #
+################################################################################
+
+Selected ingroup species: Ae_longissima
+
+Number of analyzed individual: 4 (from 1 population(s))
+
+Total number of contig used for sequence analysis: 11931
+
+Total number of SNPs: 37230
+
+  - Biallelic: 37128
+  - Triallelic: 102
+  - Quadriallelic: 0
+
+Fit:
+
+Average Fit: 0.958875 [0.953684; 0.963903]
+(Fit calculated in 7013 contigs)
+
+Weir & Cockerham Fit (Evolution 1984):
+
+Average Weir & Cockerham Fit: 0.978895 [0.97561; 0.981829]
+(Fit calculated in 7013 contigs)
+
+piN/piS ratio:
+
+Average piS in focal species: 0.00507021 [0.004859; 0.00529]
+Average piN in focal species: 0.00053289 [0.000512; 0.000553]
+Average piN / average piS: 0.105102 [0.100835; 0.109619]
+(piS and piN calculated in 11931 contigs of average length 299)
+
+Individual heterozygosity:
+
+H(Tr241): 1.5201e-05
+H(Tr242): 1.37089e-05
+H(Tr243): 9.01803e-05
+H(Tr355): 3.85155e-05
+
+

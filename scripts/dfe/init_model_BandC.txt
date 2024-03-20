@@ -1,0 +1,18 @@
+# each parameter is preceded by a flag; 0: estimate; 1: fix
+
+# full DFE error
+#ID   eps an    eps cont  lambda    theta bar  a      S d      b      p b      S b      r (at least #groups-1 of them)
+1     0 0.01    1 0.00    0 0.01   0 0.02    1 -1   0 -20000   0 0.25  0 0.02   0 4      0  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+# full DFE no error
+#ID   eps an    eps cont  lambda    theta bar  a      S d      b      p b      S b      r (at least #groups-1 of them)
+2     1 0    1 0.00    0 0.01   0 0.02    1 -1   0 -20000   0 0.25  0 0.02   0 4      0  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+# deleterious DFE only  error
+#ID   eps an    eps cont  lambda    theta bar  a     S d      b      p b      S b      r (at least #groups-1 of them)
+3     0 0.03    1 0.00    0 0.01   0 0.02    1 -1   0 -90000   0 0.2  1 0      1 0      0  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+# deleterious DFE only  no error
+#ID   eps an    eps cont  lambda    theta bar  a     S d      b      p b      S b      r (at least #groups-1 of them)
+4     1 0.00    1 0.00    0 0.01   0 0.02    1 -1   0 -90000   0 0.2  1 0      1 0      0  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 

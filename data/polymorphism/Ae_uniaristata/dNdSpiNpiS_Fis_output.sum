@@ -1,0 +1,40 @@
+################################################################################
+#                              Biological Summary                              #
+################################################################################
+
+Selected ingroup species: Ae_uniaristata
+
+Number of analyzed individual: 3 (from 1 population(s))
+
+Total number of contig used for sequence analysis: 15183
+
+Total number of SNPs: 17595
+
+  - Biallelic: 17587
+  - Triallelic: 8
+  - Quadriallelic: 0
+
+Fit:
+
+Average Fit: 0.932427 [0.924222; 0.940216]
+(Fit calculated in 5270 contigs)
+
+Weir & Cockerham Fit (Evolution 1984):
+
+Average Weir & Cockerham Fit: 0.959281 [0.953416; 0.964634]
+(Fit calculated in 5270 contigs)
+
+piN/piS ratio:
+
+Average piS in focal species: 0.00189969 [0.001799; 0.001997]
+Average piN in focal species: 0.000322765 [0.000308; 0.000337]
+Average piN / average piS: 0.169904 [0.161453; 0.178752]
+(piS and piN calculated in 15183 contigs of average length 296)
+
+Individual heterozygosity:
+
+H(Tr402): 1.45914e-05
+H(Tr403): 1.34063e-05
+H(Tr404): 7.54013e-05
+
+

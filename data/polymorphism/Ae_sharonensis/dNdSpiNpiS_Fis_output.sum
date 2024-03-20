@@ -1,0 +1,39 @@
+################################################################################
+#                              Biological Summary                              #
+################################################################################
+
+Selected ingroup species: Ae_sharonensis
+
+Number of analyzed individual: 2 (from 1 population(s))
+
+Total number of contig used for sequence analysis: 15102
+
+Total number of SNPs: 36216
+
+  - Biallelic: 36121
+  - Triallelic: 95
+  - Quadriallelic: 0
+
+Fit:
+
+Average Fit: 0.526776 [0.507829; 0.545099]
+(Fit calculated in 6780 contigs)
+
+Weir & Cockerham Fit (Evolution 1984):
+
+Average Weir & Cockerham Fit: 0.751171 [0.738203; 0.763762]
+(Fit calculated in 6780 contigs)
+
+piN/piS ratio:
+
+Average piS in focal species: 0.00504326 [0.004835; 0.005254]
+Average piN in focal species: 0.000631708 [0.000605; 0.000657]
+Average piN / average piS: 0.125258 [0.120232; 0.130391]
+(piS and piN calculated in 15102 contigs of average length 294)
+
+Individual heterozygosity:
+
+H(Tr264): 0.000512169
+H(Tr265): 0.000575581
+
+

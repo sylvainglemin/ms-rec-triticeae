@@ -1,0 +1,44 @@
+################################################################################
+#                              Biological Summary                              #
+################################################################################
+
+Selected ingroup species: Ae_mutica
+
+Number of analyzed individual: 7 (from 1 population(s))
+
+Total number of contig used for sequence analysis: 10407
+
+Total number of SNPs: 181972
+
+  - Biallelic: 178822
+  - Triallelic: 3115
+  - Quadriallelic: 35
+
+Fit:
+
+Average Fit: 0.0997902 [0.093393; 0.106217]
+(Fit calculated in 9617 contigs)
+
+Weir & Cockerham Fit (Evolution 1984):
+
+Average Weir & Cockerham Fit: 0.199264 [0.192929; 0.205593]
+(Fit calculated in 9617 contigs)
+
+piN/piS ratio:
+
+Average piS in focal species: 0.0183592 [0.0179; 0.018843]
+Average piN in focal species: 0.0017718 [0.001721; 0.001823]
+Average piN / average piS: 0.0965072 [0.093766; 0.099334]
+(piS and piN calculated in 10296 contigs of average length 273)
+
+Individual heterozygosity:
+
+H(Tr237): 0.004595
+H(Tr244): 0.00417298
+H(Tr328): 0.00404197
+H(Tr329): 0.00441367
+H(Tr331): 0.00523335
+H(Tr332): 0.00548311
+H(Tr346): 0.00437767
+
+

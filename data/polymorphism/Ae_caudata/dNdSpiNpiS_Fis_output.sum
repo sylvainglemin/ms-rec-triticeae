@@ -1,0 +1,40 @@
+################################################################################
+#                              Biological Summary                              #
+################################################################################
+
+Selected ingroup species: Ae_caudata
+
+Number of analyzed individual: 3 (from 1 population(s))
+
+Total number of contig used for sequence analysis: 13511
+
+Total number of SNPs: 61826
+
+  - Biallelic: 61658
+  - Triallelic: 168
+  - Quadriallelic: 0
+
+Fit:
+
+Average Fit: 0.453004 [0.438738; 0.46736]
+(Fit calculated in 8744 contigs)
+
+Weir & Cockerham Fit (Evolution 1984):
+
+Average Weir & Cockerham Fit: 0.654153 [0.641152; 0.666598]
+(Fit calculated in 8744 contigs)
+
+piN/piS ratio:
+
+Average piS in focal species: 0.00711125 [0.006881; 0.007345]
+Average piN in focal species: 0.000819365 [0.00079; 0.000848]
+Average piN / average piS: 0.115221 [0.111305; 0.119387]
+(piS and piN calculated in 13511 contigs of average length 308)
+
+Individual heterozygosity:
+
+H(Tr139): 0.00199977
+H(Tr275): 0.000596514
+H(Tr276): 8.59919e-05
+
+

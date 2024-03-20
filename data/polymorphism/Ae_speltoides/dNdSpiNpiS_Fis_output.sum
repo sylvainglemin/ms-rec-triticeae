@@ -1,0 +1,47 @@
+################################################################################
+#                              Biological Summary                              #
+################################################################################
+
+Selected ingroup species: Ae_speltoides
+
+Number of analyzed individual: 10 (from 1 population(s))
+
+Total number of contig used for sequence analysis: 16226
+
+Total number of SNPs: 361534
+
+  - Biallelic: 354512
+  - Triallelic: 6915
+  - Quadriallelic: 107
+
+Fit:
+
+Average Fit: 0.294568 [0.289169; 0.300024]
+(Fit calculated in 15492 contigs)
+
+Weir & Cockerham Fit (Evolution 1984):
+
+Average Weir & Cockerham Fit: 0.374161 [0.369476; 0.3788]
+(Fit calculated in 15492 contigs)
+
+piN/piS ratio:
+
+Average piS in focal species: 0.0223678 [0.021971; 0.022773]
+Average piN in focal species: 0.00211685 [0.00207; 0.002163]
+Average piN / average piS: 0.0946382 [0.092433; 0.096854]
+(piS and piN calculated in 15975 contigs of average length 237)
+
+Individual heterozygosity:
+
+H(Tr1): 0.00715217
+H(Tr156): 0.00111558
+H(Tr223): 0.00704073
+H(Tr227): 0.00241419
+H(Tr251): 0.0056698
+H(Tr253): 0.00301794
+H(Tr290): 0.00244513
+H(Tr320): 0.00149337
+H(Tr321): 0.00676256
+H(Tr323): 0.00621767
+
+

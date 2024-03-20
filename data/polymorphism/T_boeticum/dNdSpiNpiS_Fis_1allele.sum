@@ -1,0 +1,47 @@
+################################################################################
+#                              Biological Summary                              #
+################################################################################
+
+Selected ingroup species: T_boeticum
+
+Number of analyzed individual: 10 (from 1 population(s))
+
+Total number of contig used for sequence analysis: 8425
+
+Total number of SNPs: 16266
+
+  - Biallelic: 16235
+  - Triallelic: 31
+  - Quadriallelic: 0
+
+Fit:
+
+Average Fit: -nan [-2147.48; -2147.48]
+(Fit calculated in 0 contigs)
+
+Weir & Cockerham Fit (Evolution 1984):
+
+Average Weir & Cockerham Fit: -nan [-2147.48; -2147.48]
+(Fit calculated in 0 contigs)
+
+piN/piS ratio:
+
+Average piS in focal species: 0.00355415 [0.003358; 0.003756]
+Average piN in focal species: 0.000388555 [0.000365; 0.000411]
+Average piN / average piS: 0.109324 [0.101676; 0.117329]
+(piS and piN calculated in 8051 contigs of average length 126)
+
+Individual heterozygosity:
+
+H(TS1): -nan
+H(TS10): -nan
+H(TS2): -nan
+H(TS3): -nan
+H(TS4): -nan
+H(TS5): -nan
+H(TS6): -nan
+H(TS7): -nan
+H(TS8): -nan
+H(TS9): -nan
+
+
