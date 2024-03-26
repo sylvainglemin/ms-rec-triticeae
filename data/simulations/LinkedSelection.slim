@@ -1,0 +1,156 @@
+// Simulation of linked selection and selfing
+// Miguel de Navascués, INRAE - miguel.navascues@inrae.fr
+// Version 0.0
+initialize() {
+	// run on command line:
+	// slim -d project='c("test")' -d N=10000 -d sigma=0.0 -d n=15 -d mu=0.000001 -d min_r=0.0000001 -d max_r=0.000001 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim 
+
+	if (exists("slimgui")){
+		setwd("/home/miguel/Work/Research/2024_LinkedSelection"); // change to appropriate local settings
+		defineConstant("project", "test"); // project name: prefix for output files
+		defineConstant("N", 1000); // pop size
+		defineConstant("sigma", 0.8); // selfing rate
+		defineConstant("n", 15); // sample size
+		defineConstant("mu", 1e-7); // mutation rate
+		defineConstant("min_r", 1e-9); // minimum recombination rate
+		defineConstant("max_r", 1e-7); // maximum recombination rate
+		defineConstant("del_dominance", 0.25); //dominance coefficient for deleterious mutations
+		defineConstant("DFE_mean", -0.03); // mean for distribution of fitness effects (gamma distribution)
+		defineConstant("DFE_shape", 0.2); // shape parameter for distribution of fitness effects (gamma distribution)
+		defineConstant("neu_del_proportions", c(1, 2)); // gene size (bp)
+		defineConstant("gen_size", 1000); // gene size (bp)
+		defineConstant("intergen_size", 4000); // intergene size (bp)
+		defineConstant("num_of_genes_per_chr", 21); //number of windows in a chromosome
+		defineConstant("num_of_chr", 2); //number of chromosomes (only 1 or 2)
+	}
+	if (num_of_chr!=1 & num_of_chr!=2) stop("Error: number of chromosomes must be 1 or 2.");
+	defineConstant("log_interval", 200); // number of generations between logging sumstats (for plotting/checking steady-state)
+	defineConstant("chromosome_size", num_of_genes_per_chr * (gen_size + intergen_size) ); // genome size
+	defineConstant("genome_size", num_of_chr * chromosome_size ); // genome size
+	defineConstant("last_generation", 4 * 5 * N ); // number of generations to run the simulation
+	
+	if (num_of_genes_per_chr%2 == 0){
+		rates = exp(seq(log(max_r), log(min_r), length = asInteger(num_of_genes_per_chr/2)));
+		rates = c(rates, rev(rates));
+	}else{
+		rates = exp(seq(log(max_r), log(min_r), length = asInteger(num_of_genes_per_chr/2)));
+		rates = c(rates, min_r, rev(rates));
+	}
+	ends = seq( gen_size + intergen_size, chromosome_size, gen_size + intergen_size);
+	
+	
+	rates_of_genes = rates;
+	if (num_of_chr == 2){
+		rates_of_genes = c(rates, rates);
+		rates = c(rates, 0.5, rates);
+		ends = c(ends, ends[num_of_genes_per_chr - 1] + 1, ends + chromosome_size);
+	}
+	ends = ends - 1;
+	
+	
+	initializeMutationRate(mu);
+	initializeMutationType("m1", 0.5, "f", 0.0);
+	initializeMutationType("m2", del_dominance, "g", DFE_mean, DFE_shape);
+	initializeGenomicElementType("g1", c(m1, m2), neu_del_proportions); // gene
+	for (i in seqLen(num_of_genes_per_chr * num_of_chr)){
+		initializeGenomicElement(g1, asInteger(intergen_size/2) + i * (gen_size + intergen_size),
+			asInteger(intergen_size/2) + i * (gen_size + intergen_size) + gen_size - 1);
+	}
+	initializeRecombinationRate(rates, ends);
+	
+	defineConstant("RSCRIPT", "/usr/bin/Rscript"); // change to appropriate local settings
+	
+	
+	lines = NULL;
+	for (i in seqLen(num_of_genes_per_chr * num_of_chr)){
+		genLine = paste0( asInteger(intergen_size/2) + i * (gen_size + intergen_size), ", ",
+			asInteger(intergen_size/2) + i * (gen_size + intergen_size) + gen_size - 1, ", ",
+			rates_of_genes[i], "\n");
+		lines = c(lines, genLine);
+	}
+	file = paste0(lines);
+	file = "start, end, rate\n" + file;
+	if (!writeFile(project + "_gene_map.txt", file)) stop("Error writing file.");
+	
+	lines = paste0("N: ", N, "\n");
+	lines = c(lines, paste0("sigma: ", sigma, "\n"));
+	lines = c(lines, paste0("n: ", n, "\n"));
+	lines = c(lines, paste0("mu: ", mu, "\n"));
+	lines = c(lines, paste0("min_r: ", min_r, "\n"));
+	lines = c(lines, paste0("max_r: ", max_r, "\n"));
+	lines = c(lines, paste0("DFE_mean: ", DFE_mean, "\n"));
+	lines = c(lines, paste0("DFE_shape: ", DFE_shape, "\n"));
+	lines = c(lines, paste("neu_del_proportions: ", neu_del_proportions, "\n", sep=" "));
+	lines = c(lines, paste0("gen_size: ", gen_size, "\n"));
+	lines = c(lines, paste0("intergen_size: ", intergen_size, "\n"));
+	lines = c(lines, paste0("num_of_genes_per_chr: ", num_of_genes_per_chr, "\n"));
+	lines = c(lines, paste0("num_of_chr: ", num_of_chr, "\n"));
+	file = paste0(lines);
+	if (!writeFile(project + "_params.txt", file)) stop("Error writing file.");
+
+}
+
+// start population
+1 early() {
+	sim.addSubpop("p1", N);
+	p1.setSelfingRate(sigma);
+	
+	community.rescheduleScriptBlock(s2, 5 * N, 5 * N);
+	
+	if (exists("slimgui")){
+		community.rescheduleScriptBlock(s1, 1, last_generation);
+		defineConstant("pngPath", writeTempFile("plot_", ".png", ""));
+		slimgui.openDocument(pngPath);
+	}
+}
+s1 1 late(){
+	if (exists("slimgui") & (sim.cycle == 1 | sim.cycle % log_interval == 0)){
+		pi_n = -log(calcHeterozygosity(p1.genomes, sim.mutationsOfType(m1)));
+		pi_s = -log(calcHeterozygosity(p1.genomes, sim.mutationsOfType(m2)));
+		
+		pi_n_t = c(sim.getValue("pi_n_trajectory"), pi_n);
+		sim.setValue("pi_n_trajectory", pi_n_t);
+		pi_s_t = c(sim.getValue("pi_s_trajectory"), pi_s);
+		sim.setValue("pi_s_trajectory", pi_s_t);
+		rstr = paste('{',
+			'x <- (1:' + size(pi_n_t) + ')',
+			'y1 <- c(' + paste(pi_n_t, sep=", ") + ')',
+			'y2 <- c(' + paste(pi_s_t, sep=", ") + ')',
+			'png("' + pngPath + '", width=10, height=10, units="in", res=72)',
+			'plot(x=x*' + log_interval + ', y=y1, xlim=c(0, ' + last_generation +' ), ylim=c(5, 20), type="l", xlab="time", ylab="-log(pi)", col="blue", cex.axis=2, cex.lab=2, lwd=2)',
+			'lines(x=x*' + log_interval + ', y=y2, col="red", lwd=2)',
+			'dev.off()',
+			'}', sep="\n");
+		scriptPath = writeTempFile("plot_", ".R", rstr);
+		system(RSCRIPT, args=scriptPath);
+	}
+}
+
+1: late(){
+	if (sim.cycle == 1 | sim.cycle % N == 0){
+		catn(paste0("Generation: ", sim.cycle));
+	}
+}
+
+s2 2 early()
+{
+	samples_genomes = sample(p1.genomes, n);
+	lines = NULL;
+	for (mut in sim.mutations)		{
+		if (samples_genomes.mutationCountsInGenomes(mut) != 0 & samples_genomes.mutationCountsInGenomes(mut) != n){
+			mutLine = paste0(mut.position, ", ",
+				mut.mutationType,  ", ",
+				mut.selectionCoeff,  ", ",
+				samples_genomes.mutationCountsInGenomes(mut), "\n");
+			lines = c(lines, mutLine);
+		}
+	}
+	file = paste0(lines);
+	file = "position, type, selection_coeff, count_in_sample\n" + file;
+	if (!writeFile(project + "_data_" + asInteger(sim.cycle/N) + "N.txt", file)) stop("Error writing file.");
+	community.rescheduleScriptBlock(s2, sim.cycle + 5 * N, sim.cycle + 5 * N);
+	if (sim.cycle >= last_generation){
+		sim.simulationFinished();
+	}
+}
+

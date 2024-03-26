@@ -1,0 +1,14 @@
+N: 10000
+sigma: 0.99
+n: 15
+mu: 1.0e-06
+min_r: 6.0e-08
+max_r: 6.0e-07
+DFE_mean: -0.01
+DFE_shape: 0.5
+neu_del_proportions:  1 2 
+gen_size: 1000
+intergen_size: 2000
+num_of_genes_per_chr: 1000
+num_of_chr: 1
+

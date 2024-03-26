@@ -1,0 +1,41 @@
+nohup slim -s 1234567890 -d project='c("sigma0.0_rep1")' -d N=10000 -d sigma=0.0 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+nohup slim -s 1234567890 -d project='c("sigma1.0_rep1")' -d N=10000 -d sigma=1.0 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+nohup slim -s 1234567890 -d project='c("sigma0.99_rep1")' -d N=10000 -d sigma=0.99 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+nohup slim -s 1234567890 -d project='c("sigma0.9_rep1")' -d N=10000 -d sigma=0.9 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+nohup slim -s 1234567890 -d project='c("sigma0.5_rep1")' -d N=10000 -d sigma=0.5 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+
+
+
+nohup slim -s 786517654 -d project='c("sigma0.0_rep2")' -d N=10000 -d sigma=0.0 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+nohup slim -s 812634345 -d project='c("sigma1.0_rep2")' -d N=10000 -d sigma=1.0 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+nohup slim -s 4325443 -d project='c("sigma0.99_rep2")' -d N=10000 -d sigma=0.99 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+nohup slim -s 42362727 -d project='c("sigma0.9_rep2")' -d N=10000 -d sigma=0.9 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+nohup slim -s 6547235462 -d project='c("sigma0.5_rep2")' -d N=10000 -d sigma=0.5 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+
+
+
+
+
+nohup slim -s 14566524 -d project='c("sigma0.0_rep3")' -d N=10000 -d sigma=0.0 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+nohup slim -s 693472595 -d project='c("sigma1.0_rep3")' -d N=10000 -d sigma=1.0 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+nohup slim -s 77299267 -d project='c("sigma0.99_rep3")' -d N=10000 -d sigma=0.99 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+nohup slim -s 1009987565 -d project='c("sigma0.9_rep3")' -d N=10000 -d sigma=0.9 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+nohup slim -s 323543422 -d project='c("sigma0.5_rep3")' -d N=10000 -d sigma=0.5 -d n=15 -d mu=0.000001 -d min_r=0.00000006 -d max_r=0.0000006 -d del_dominance=0.25 -d DFE_mean=-0.01 -d DFE_shape=0.5 -d neu_del_proportions='c(1,2)' -d gen_size=1000 -d intergen_size=2000 -d num_of_genes_per_chr=1000 -d num_of_chr=1 LinkedSelection.slim &
+
+
+
+
