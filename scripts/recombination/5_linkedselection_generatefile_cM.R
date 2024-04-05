@@ -122,7 +122,7 @@ mydatacM$Chromosome <- gsub("H",replacement = "",x = mydatacM$Chromosome) # Supp
 
 
 # Exporting the dataset
-toExport <- mydatacM[,c("poscM","Chromosome","Start","End","Loess1","Loess2","nb_complete_site","piSyn","f0","div","Ne")]
+toExport <- mydatacM[,c("poscM","Chromosome","Start","End","Recombination","nb_complete_site","piSyn","f0","div","Ne")]
 write.table(toExport,paste("outputs/recombination/",SPECIES,SizecM,"cM.txt",sep=""),quote = F,row.names = F)
 write.table(data_hordeumcM,paste("outputs/recombination/",SizecM,"cM.txt",sep=""),quote = F,row.names = F)
 
