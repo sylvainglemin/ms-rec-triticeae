@@ -1,14 +1,14 @@
-# Script to analyse SLiM simulation results
+# Script to analyse SLiM simulation result
+# 1 Regression (phenomenological model)
 # Sylvain Glémin (CNRS Rennes, France)
 # March 2024
-
 
 # Reading simulation files
 
 
-data_sim <- read.table("data/simulations/sigma0.0_rep1_data_20N.txt",header = T,sep = ",")
-data_rec <- read.table("data/simulations/sigma0.0_rep1_gene_map.txt",header = T,sep = ",")
-data_param <- read.table("data/simulations/sigma0.0_rep1_params.txt",header = F,sep = ":")
+data_sim <- read.table("data/simulations/sigma0.9_rep2_data_20N.txt",header = T,sep = ",")
+data_rec <- read.table("data/simulations/sigma0.9_rep2_gene_map.txt",header = T,sep = ",")
+data_param <- read.table("data/simulations/sigma0.9_rep2_params.txt",header = F,sep = ":")
 
 
 
@@ -24,6 +24,9 @@ data_sim$end <- 1000*ceiling(data_sim$position/10^3)-1
 mydata <- merge(data_sim,data_rec,by=c("start","end"))
 
 mydata$pi <- 2*mydata$count_in_sample*(n_sample-mydata$count_in_sample)/(n_sample*(n_sample-1))
+
+
+# Test of the phenomenological model ####
 
 # Grouping SNPs by genes
 
@@ -41,7 +44,6 @@ names(data_per_gene)[6] <- "nbSNPs"
 data_per_gene$piS <- ifelse(is.na(data_per_gene$piS),0,data_per_gene$piS)
 data_per_gene$piN <- ifelse(is.na(data_per_gene$piN),0,data_per_gene$piN)
 data_per_gene$nbSNPs <- ifelse(is.na(data_per_gene$nbSNPs),0,data_per_gene$nbSNPs)
-
 
 
 # Grouping SNPs by recombination categories
@@ -91,5 +93,6 @@ data10kb <- data.frame(list("pos10kb"=c(0:300)))
 data10kb$piS <- aggregate(mydata[mydata$selection_coeff==0,]$pi,by=list(mydata[mydata$selection_coeff==0,]$pos10kb),FUN = function(x) sum(x,na.rm=T))$x/10^4
 data10kb$piN <- aggregate(mydata[mydata$selection_coeff<0,]$pi,by=list(mydata[mydata$selection_coeff<0,]$pos10kb),FUN = function(x) sum(x,na.rm=T))$x/10^4
 plot(data10kb$pos10kb,data10kb$piN/data10kb$piS)
+
 
 
