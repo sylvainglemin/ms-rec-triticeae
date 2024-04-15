@@ -1,0 +1,48 @@
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_mutica_WWSS_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_mutica_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_mutica_WS_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_mutica_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_mutica_SW_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_mutica_output_test.txt; done
+
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_mutica_WWSS_LowRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_mutica_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_mutica_WS_LowRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_mutica_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_mutica_SW_LowRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_mutica_output_test.txt; done
+
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_mutica_WWSS_HighRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_mutica_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_mutica_WS_HighRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_mutica_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_mutica_SW_HighRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_mutica_output_test.txt; done
+
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_speltoides_WWSS_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_speltoides_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_speltoides_WS_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_speltoides_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_speltoides_SW_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_speltoides_output_test.txt; done
+
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_speltoides_WWSS_LowRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_speltoides_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_speltoides_WS_LowRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_speltoides_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_speltoides_SW_LowRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_speltoides_output_test.txt; done
+
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_speltoides_WWSS_HighRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_speltoides_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_speltoides_WS_HighRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_speltoides_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_speltoides_SW_HighRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_speltoides_output_test.txt; done
+
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_tauschii_WWSS_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_tauschii_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_tauschii_WS_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_tauschii_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_tauschii_SW_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_tauschii_output_test.txt; done
+
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_tauschii_WWSS_LowRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_tauschii_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_tauschii_WS_LowRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_tauschii_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_tauschii_SW_LowRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_tauschii_output_test.txt; done
+
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_tauschii_WWSS_HighRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_tauschii_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_tauschii_WS_HighRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_tauschii_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d Ae_tauschii_SW_HighRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> Ae_tauschii_output_test.txt; done
+
+for ((i=1;i<=4;i++)); do polyDFE -d T_urartu_WWSS_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> T_urartu_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d T_urartu_WS_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> T_urartu_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d T_urartu_SW_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> T_urartu_output_test.txt; done
+
+for ((i=1;i<=4;i++)); do polyDFE -d T_urartu_WWSS_LowRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> T_urartu_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d T_urartu_WS_LowRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> T_urartu_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d T_urartu_SW_LowRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> T_urartu_output_test.txt; done
+
+for ((i=1;i<=4;i++)); do polyDFE -d T_urartu_WWSS_HighRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> T_urartu_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d T_urartu_WS_HighRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> T_urartu_output_test.txt; done
+for ((i=1;i<=4;i++)); do polyDFE -d T_urartu_SW_HighRec_polyDFE.txt -v 100 -i init_model_BandC.txt $i -r range_model_BandC.txt 1   >> T_urartu_output_test.txt; done
+

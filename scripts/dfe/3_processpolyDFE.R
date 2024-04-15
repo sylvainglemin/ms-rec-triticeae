@@ -1,9 +1,14 @@
-library(ggplot2)
+# Processing the output of polyDFE results and drawing figures
+# Example of three species
+# Sylvain Glémin (CNRS Rennes, France)
+# September 2021, updated April 2024
 
+
+# packages to install
+if (!require("ggplot2"))   install.packages("ggplot2", dependencies = TRUE)
+if (!require("cubature"))   install.packages("cubature", dependencies = TRUE)
 # Require the following R script from the polyDFE package
-source("postprocessing.R")
-
-require(cubature)
+source("scripts/dfe/postprocessing.R")
 
 
 # Function to merge multiple plots
@@ -37,7 +42,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 }
 
 
-#### integration over a DFE to obtain the proportion of mutations within a given range
+#### Functions to integrate over a DFE to obtain the proportion of mutations within a given range
 
 
 ZERO <- 10^(-10) ## something almost zero to avoid numerical divergence in 0
@@ -88,12 +93,10 @@ classMutation <- function(Smean,shape,Spos,p,Smin,Smax){
   }
 }
 
-
 classMutationDisp <- function(Smean,shape,Smax,Slow,Sup){
   C <- adaptIntegrate(phi_disp(Smean,shape,Smax), lowerLimit=Slow, upperLimit=Sup)$integral
   return(C)
 }
-
 
 w_neg <- function(Smean,shape) {
   g <- function(S) {phi_neg(Smean,shape)(S) * S / (1 - exp(-S))}
@@ -142,7 +145,8 @@ Vnames <- c()
 
 for(SPECIES in list_species) {
   
-  setwd(paste("/Users/sylvain/Documents/Boulot/Recherche/Thematiques/SystRepro/TRANS/Triticees/DFE/Old/PolyDFEResults/",SPECIES,"/",sep=""))
+  unzip(paste("outputs/dfe/results/",SPECIES,".zip",sep=""),exdir = "outputs/dfe/results/")
+  
   list_type <- c("total","mapped","highrec","lowrec")
   
   for(TYPE in list_type) {
@@ -161,7 +165,7 @@ for(SPECIES in list_species) {
       Sb <- vector("numeric")
       pb <- vector("numeric")
       for(j in c(1:4)){
-        FILE <- paste(PREFIX,"_modelC",j,"_res.txt",sep="")
+        FILE <- paste("outputs/dfe/results/",SPECIES,"/",PREFIX,"_modelC",j,"_res.txt",sep="")
         if(file.exists(FILE)){
           if(length(grep("alpha_dfe =",readLines(FILE)))>0){
             est <- parseOutput(FILE)
@@ -196,6 +200,10 @@ for(SPECIES in list_species) {
     dfe_species <- rbind(dfe_species,one_sp)
     print(c(SPECIES,TYPE))
   }
+  # Removing folders
+  unlink(paste("outputs/dfe/results/",SPECIES,sep=""),recursive = T)
+  macfile <- "outputs/dfe/results/__MACOSX/"
+  if(file.exists(macfile)) unlink(macfile,recursive = T)
 }
 
 mydata <- as.data.frame(dfe_species)
@@ -219,7 +227,7 @@ mydata$MS <- as.factor(ifelse(mydata$Species=="Ae_mutica","Outcrossing",ifelse(m
 
 mydata <- droplevels(mydata)
                     
-write.table(mydata,"dfe_results_4focal.txt",sep = "\t",quote = F,row.names = F)
+write.table(mydata,"outputs/dfe/results/dfe_results_4focal.txt",sep = "\t",quote = F,row.names = F)
 
 
 ############################# #
@@ -227,7 +235,7 @@ write.table(mydata,"dfe_results_4focal.txt",sep = "\t",quote = F,row.names = F)
 ############################# #
 
 
-mydata <- read.table("dfe_results_4focal.txt",header=T)
+mydata <- read.table("outputs/dfe/results/dfe_results_4focal.txt",header=T)
 
 dataplot <- mydata[is.na(mydata$Rec) & mydata$Type!="mapped",]
 dataplot$Species <- ifelse(dataplot$Species=="Ae_mutica","Ae. mutica",dataplot$Species)
@@ -281,7 +289,7 @@ G6
 
 # Only graphs 1 and 6 are presented in the main text
 
-pdf("DFE_Species_Recombination.pdf",width = 8,height = 12)
+pdf("figures/main/DFE_Species_Recombination.pdf",width = 8,height = 12)
 multiplot(G1,G6)
 dev.off()
 
@@ -295,8 +303,8 @@ dev.off()
 dfeGC <- data.frame()
 
 for(SPECIES in list_species) {
-  
-  FILE <- paste(SPECIES,"_output_test.txt",sep="")
+
+  FILE <- paste("outputs/dfe/results/GC/",SPECIES,"_output_test.txt",sep="")
   dfe <- c()
   est <- parseOutput(FILE)
   for(i in c(1:length(est))){
@@ -369,7 +377,7 @@ Ggc <- Ggc + xlab(expression("Adaptive substitution rate ("*omega[a]*")")) + yla
 Ggc
 
 
-pdf("DFE_Species_RecombinationGC.pdf",width = 8,height = 5)
+pdf("figures/sup_mat/DFE_Species_RecombinationGC.pdf",width = 8,height = 5)
 Ggc
 dev.off()
 
