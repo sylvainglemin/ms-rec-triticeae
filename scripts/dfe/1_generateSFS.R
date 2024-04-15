@@ -1,4 +1,7 @@
-# Script to generate SFS from SNP table
+# Script to SFS from SNP table
+# Sylvain Glémin (CNRS Rennes, France)
+# September 2021, updated April 2024
+
 
 # Function to project a SFS from n to m categories
 reduceSFS <- function(sfs,m){
@@ -13,18 +16,18 @@ reduceSFS <- function(sfs,m){
 }
 
 
-FOLDER <- "Scripts_datasets"
+
 # To choose the files
 SPECIES <- "T_urartu"
 NUMBER <- 10
-donnees <- read.table(paste(FOLDER,SPECIES,"/",SPECIES,"_T_caputmedusae_snp_table_n",NUMBER,".txt",sep=""),header=T)
-donneesATCG <- read.table(paste(FOLDER,SPECIES,"/",SPECIES,"_snp_table_ATGC.txt",sep=""),header=T)
+donnees <- read.table(paste("data/polymorphism/",SPECIES,"/",SPECIES,"_T_caputmedusae_snp_table_n",NUMBER,".txt",sep=""),header=T)
+donneesATCG <- read.table(paste("data/polymorphism/",SPECIES,"/",SPECIES,"_snp_table_ATGC.txt",sep=""),header=T)
 donnees <- merge(donnees,donneesATCG,by=c("gene","position"))
 donnees$gene <- gsub(".fasta.fst.clean.fst","",donnees$gene)
 
-data_rec <- read.table(paste(FOLDER,"Recombination/RecombinationRates_AllHordeumGenes.txt",sep=""),header=T)
-data_hordeum <- read.table(paste(FOLDER,"Orthology/HordeumGenes.txt",sep=""),header=T)
-data_focal <- read.table(paste(FOLDER2,"Orthology/",SPECIES,"_Hordeum_reciprocalbestblast.txt",sep=""),header=T)
+data_rec <- read.table("data/recombination/RecombinationRates_AllHordeumGenes.txt",header=T)
+data_hordeum <- read.table("data/recombination/HordeumGenes.txt",header=T)
+data_focal <- read.table(paste("outputs/orthology/",SPECIES,"_Hordeum_reciprocalbestblast.txt",sep=""),header=T)
 data_focal$Query <- gsub("_simExt","",data_focal$Query)
 data_focal$Query <- gsub("_lgOrf","",data_focal$Query)
 data_focal$Query <- gsub("_ESTScan","",data_focal$Query)
@@ -37,7 +40,7 @@ names(mapped)[c(1,2)] <- c("gene","Hordeum_gene")
 
 
 # To get the count of syn and non-syn position
-contig <- read.table(paste(FOLDER,"/PolymorphismData/",SPECIES,"/dNdSpiNpiS_output_outgroup",sep=""),header=T)
+contig <- read.table(paste("data/polymorphism/",SPECIES,"/dNdSpiNpiS_output_outgroup",sep=""),header=T)
 infocontig <- contig[,c("Contig_name","nS","nN")]
 
 
@@ -75,7 +78,7 @@ for(n in Nmin:Nchrom){
   sfs_NS <- sfs_NS + reduceSFS(sfs_NSn,Nmin-1)
 }
 
-FILENAME <- paste(SPECIES,"_total_polyDFE.txt",sep="")
+FILENAME <- paste("outputs/dfe/sfs/",SPECIES,"_total_polyDFE.txt",sep="")
 write(x=c(1,1,Nmin),file=FILENAME,sep="\t",ncol=3)
 write(x=c(sfs_S,l_S),file=FILENAME,sep="\t",ncol=(length(sfs_S)+1),append = T)
 write(x=c(sfs_NS,l_NS),file=FILENAME,sep="\t",ncol=(length(sfs_NS)+1),append = T)
@@ -104,7 +107,7 @@ for(i in 1:Nboot) {
     sfs_S <- sfs_S + reduceSFS(sfs_Sn,Nmin-1)
     sfs_NS <- sfs_NS + reduceSFS(sfs_NSn,Nmin-1)
   }
-  FILENAME <- paste(SPECIES,"_total_polyDFE_boot",i,".txt",sep="")
+  FILENAME <- paste("outputs/dfe/sfs/",SPECIES,"_total_polyDFE_boot",i,".txt",sep="")
   write(x=c(1,1,Nmin),file=FILENAME,sep="\t",ncol=3)
   write(x=c(sfs_S,l_S),file=FILENAME,sep="\t",ncol=(length(sfs_S)+1),append = T)
   write(x=c(sfs_NS,l_NS),file=FILENAME,sep="\t",ncol=(length(sfs_NS)+1),append = T)
@@ -146,7 +149,7 @@ for(n in Nmin:Nchrom){
   sfs_NS <- sfs_NS + reduceSFS(sfs_NSn,Nmin-1)
 }
 
-FILENAME <- paste(SPECIES,"_mapped_polyDFE.txt",sep="")
+FILENAME <- paste("outputs/dfe/sfs/",SPECIES,"_mapped_polyDFE.txt",sep="")
 write(x=c(1,1,Nmin),file=FILENAME,sep="\t",ncol=3)
 write(x=c(sfs_S,l_S),file=FILENAME,sep="\t",ncol=(length(sfs_S)+1),append = T)
 write(x=c(sfs_NS,l_NS),file=FILENAME,sep="\t",ncol=(length(sfs_NS)+1),append = T)
@@ -174,7 +177,7 @@ for(i in 1:Nboot) {
     sfs_S <- sfs_S + reduceSFS(sfs_Sn,Nmin-1)
     sfs_NS <- sfs_NS + reduceSFS(sfs_NSn,Nmin-1)
   }
-  FILENAME <- paste(SPECIES,"_mapped_polyDFE_boot",i,".txt",sep="")
+  FILENAME <- paste("outputs/dfe/sfs",SPECIES,"_mapped_polyDFE_boot",i,".txt",sep="")
   write(x=c(1,1,Nmin),file=FILENAME,sep="\t",ncol=3)
   write(x=c(sfs_S,l_S),file=FILENAME,sep="\t",ncol=(length(sfs_S)+1),append = T)
   write(x=c(sfs_NS,l_NS),file=FILENAME,sep="\t",ncol=(length(sfs_NS)+1),append = T)
@@ -219,7 +222,7 @@ for(n in Nmin:Nchrom){
   sfs_NS <- sfs_NS + reduceSFS(sfs_NSn,Nmin-1)
 }
 
-FILENAME <- paste(SPECIES,"_highrec_polyDFE.txt",sep="")
+FILENAME <- paste("outputs/dfe/sfs/",SPECIES,"_highrec_polyDFE.txt",sep="")
 write(x=c(1,1,Nmin),file=FILENAME,sep="\t",ncol=3)
 write(x=c(sfs_S,l_S),file=FILENAME,sep="\t",ncol=(length(sfs_S)+1),append = T)
 write(x=c(sfs_NS,l_NS),file=FILENAME,sep="\t",ncol=(length(sfs_NS)+1),append = T)
@@ -247,7 +250,7 @@ for(i in 1:Nboot) {
     sfs_S <- sfs_S + reduceSFS(sfs_Sn,Nmin-1)
     sfs_NS <- sfs_NS + reduceSFS(sfs_NSn,Nmin-1)
   }
-  FILENAME <- paste(SPECIES,"_highrec_polyDFE_boot",i,".txt",sep="")
+  FILENAME <- paste("outputs/dfe/sfs/",SPECIES,"_highrec_polyDFE_boot",i,".txt",sep="")
   write(x=c(1,1,Nmin),file=FILENAME,sep="\t",ncol=3)
   write(x=c(sfs_S,l_S),file=FILENAME,sep="\t",ncol=(length(sfs_S)+1),append = T)
   write(x=c(sfs_NS,l_NS),file=FILENAME,sep="\t",ncol=(length(sfs_NS)+1),append = T)
