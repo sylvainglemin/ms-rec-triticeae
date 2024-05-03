@@ -58,12 +58,12 @@ pc1 <- pca_individuals$li[,1]
 pc1_mean <- tapply(pc1,aeg$species_code, mean)
 
 mydata <- c()
-for(FILE in list.files(path = "outputs/recombination/",pattern = "Results_BSfit_filter300") ){
+for(FILE in list.files(path = "outputs/recombination/hordeum/",pattern = "Results_BSfit_filter300") ){
   mydata <-  rbind(mydata, read.table(paste("outputs/recombination/",FILE,sep=""),header=T))
 }
 mydata <- mydata[-6]
-for(FILE in list.files(path = "outputs/recombination/",pattern = "Results_BSfit_FixedFis_filter300") ){
-  mydata <-  rbind(mydata, read.table(paste("outputs/recombination/",FILE,sep=""),header=T))
+for(FILE in list.files(path = "outputs/recombination/hordeum/",pattern = "Results_BSfit_FixedFis_filter300") ){
+  mydata <-  rbind(mydata, read.table(paste("outputs/recombination/hordeum/",FILE,sep=""),header=T))
 }
 # Replace T_boeticum by T_monococcum so also change species list
 mydata$Species <- ifelse(mydata$Species=="T_boeticum","T_monococcum",mydata$Species)

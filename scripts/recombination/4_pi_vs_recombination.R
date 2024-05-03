@@ -39,7 +39,7 @@ for(SP in species_list) {
   SPECIES <- SP
   
   if(SPECIES=="T_boeticum") {
-    data_focal <- read.table(paste("data/orthology/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
+    data_focal <- read.table(paste("outputs/orthology/hordeum/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
     data_focal$V1 <- gsub("_simExt","",data_focal$V1)
     data_focal$V1 <- gsub("_lgOrf","",data_focal$V1)
     data_focal$V1 <- gsub("_ESTScan","",data_focal$V1)
@@ -52,7 +52,7 @@ for(SP in species_list) {
     data_focal$dN <- 0.01
     data_focal$dS <- 0.1
   } else {
-    data_focal <- read.table(paste("outputs/orthology/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
+    data_focal <- read.table(paste("outputs/orthology/hordeum/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
     data_focal$V1 <- gsub("_simExt","",data_focal$V1)
     data_focal$V1 <- gsub("_lgOrf","",data_focal$V1)
     data_focal$V1 <- gsub("_ESTScan","",data_focal$V1)
@@ -154,7 +154,7 @@ for(SP in species_list) {
   names(stat) <- c("piSmin","piSmax","rec.pi","slope.pi","medianpiS","f0min","f0max","rec.f0","medianf0","pimax.sd","f0min.sd")
   stat$species <- SPECIES
   result <-rbind(result,stat)
-  write.table(result,paste("outputs/recombination/stat_recombination_per_species_Ncat=",Ncat,".txt",sep=""),sep = "\t",quote = F,row.names = F)
+  write.table(result,paste("outputs/recombination/hordeum/stat_recombination_per_species_Ncat=",Ncat,".txt",sep=""),sep = "\t",quote = F,row.names = F)
   print(SPECIES)
 }
 
@@ -173,7 +173,7 @@ for(SP in species_list) {
   SPECIES <- SP
   
   if(SPECIES=="T_boeticum") {
-    data_focal <- read.table(paste("data/orthology/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
+    data_focal <- read.table(paste("outputs/orthology/hordeum/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
     data_focal$V1 <- gsub("_simExt","",data_focal$V1)
     data_focal$V1 <- gsub("_lgOrf","",data_focal$V1)
     data_focal$V1 <- gsub("_ESTScan","",data_focal$V1)
@@ -186,7 +186,7 @@ for(SP in species_list) {
     data_focal$dN <- 0.01
     data_focal$dS <- 0.1
   } else {
-    data_focal <- read.table(paste("data/orthology/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
+    data_focal <- read.table(paste("outputs/orthology/hordeum/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
     data_focal$V1 <- gsub("_simExt","",data_focal$V1)
     data_focal$V1 <- gsub("_lgOrf","",data_focal$V1)
     data_focal$V1 <- gsub("_ESTScan","",data_focal$V1)
@@ -240,7 +240,7 @@ for(SP in species_list) {
   names(stat) <- c("reclow","rechigh","f0low","f0high")
   stat$species <- SPECIES
   result <-rbind(result,stat)
-  write.table(result,paste("outputs/recombination/stat_recombination_per_species_Ncat=100.txtstat_recombination_per_species_Ncat=",Ncat,".txt",sep=""),sep = "\t",quote = F,row.names = F)
+  write.table(result,paste("outputs/recombination/hordeum/stat_recombination_per_species_Ncat=100.txtstat_recombination_per_species_Ncat=",Ncat,".txt",sep=""),sep = "\t",quote = F,row.names = F)
   
   print(SPECIES)
 }

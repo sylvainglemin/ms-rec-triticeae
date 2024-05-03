@@ -112,7 +112,7 @@ fis_list <- c(0.9,
 # Estimation Free Fis ####
 
 
-output <- paste("outputs/recombination/Results_BSfit_filter",FILTER,"_window",size,"cM.txt",sep="")
+output <- paste("outputs/recombination/hordeum/Results_BSfit_filter",FILTER,"_window",size,"cM.txt",sep="")
 
 varnames <- c("Species","Windows","piS_obs","piS_est","Fis_obs","Fis_est","u1_est","s1_est","u2_est","s2_est","u3_est","s3_est","lnLNull","lnLMax","lnLSat","R2deviance","R2efron")
 write(x = varnames,file = output,ncolumns = length(varnames),append = F)
@@ -121,10 +121,10 @@ for(i in c(1:length(species_list))) {
 
 # i <- 5
 WINDOW <- paste(size,"cM",sep = "")
-data_hordeumcM <- read.table(paste("outputs/recombination/data_hordeum",WINDOW,".txt",sep=""),header = T)
+data_hordeumcM <- read.table(paste("outputs/recombination/hordeum/data_hordeum",WINDOW,".txt",sep=""),header = T)
   
 SPECIES <- species_list[i]
-FILE <- paste("outputs/recombination/",SPECIES,WINDOW,".txt",sep="")
+FILE <- paste("outputs/recombination/hordeum/",SPECIES,WINDOW,".txt",sep="")
 mydatacM <- read.table(FILE,header = T)
 mydatacM <- mydatacM[!is.na(mydatacM$piSyn),]
 mydatacM$reldiv <- mydatacM$div/mean(mydatacM$div)
@@ -199,7 +199,7 @@ print(c(SPECIES,mean(mydatacM$piSyn),pi_est,fisinit,round(f_est,3),round(R2devia
 
 # Estimation Fixed Fis ####
 
-output <- paste("outputs/recombination/Results_BSfit_FixedFis_filter",FILTER,"_window",size,"cM.txt",sep="")
+output <- paste("outputs/recombination/hordeum/Results_BSfit_FixedFis_filter",FILTER,"_window",size,"cM.txt",sep="")
 varnames <- c("Species","Windows","piS_obs","piS_est","Fis_obs","u1_est","s1_est","u2_est","s2_est","u3_est","s3_est","lnLNull","lnLMax","lnLSat","R2deviance","R2efron")
 write(x = varnames,file = output,ncolumns = length(varnames),append = F)
 
@@ -207,10 +207,10 @@ for(i in c(1:length(species_list))) {
 
 # i <- 1
   WINDOW <- paste(size,"cM",sep = "")
-  data_hordeumcM <- read.table(paste("outputs/recombination/data_hordeum",WINDOW,".txt",sep=""),header = T)
+  data_hordeumcM <- read.table(paste("outputs/recombination/hordeum/data_hordeum",WINDOW,".txt",sep=""),header = T)
   
   SPECIES <- species_list[i]
-  FILE <- paste("outputs/recombination/",SPECIES,WINDOW,".txt",sep="")
+  FILE <- paste("outputs/recombination/hordeum/",SPECIES,WINDOW,".txt",sep="")
   mydatacM <- read.table(FILE,header = T)
   mydatacM <- mydatacM[!is.na(mydatacM$piSyn),]
   mydatacM$reldiv <- mydatacM$div/mean(mydatacM$div)

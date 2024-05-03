@@ -67,7 +67,7 @@ for(i in 1:length(species_list)) {
 # Choice of the species
 SPECIES <- species_list[i]
 
-data_focal <- read.table(paste("outputs/orthology/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
+data_focal <- read.table(paste("outputs/orthology/hordeum/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
 data_focal$V1 <- gsub("_simExt","",data_focal$V1)
 data_focal$V1 <- gsub("_lgOrf","",data_focal$V1)
 data_focal$V1 <- gsub("_ESTScan","",data_focal$V1)
@@ -123,8 +123,8 @@ mydatacM$Chromosome <- gsub("H",replacement = "",x = mydatacM$Chromosome) # Supp
 
 # Exporting the dataset
 toExport <- mydatacM[,c("poscM","Chromosome","Start","End","Recombination","nb_complete_site","piSyn","f0","div","Ne")]
-write.table(toExport,paste("outputs/recombination/",SPECIES,SizecM,"cM.txt",sep=""),quote = F,row.names = F)
-write.table(data_hordeumcM,paste("outputs/recombination/",SizecM,"cM.txt",sep=""),quote = F,row.names = F)
+write.table(toExport,paste("outputs/recombination/hordeum/",SPECIES,SizecM,"cM.txt",sep=""),quote = F,row.names = F)
+write.table(data_hordeumcM,paste("outputs/recombination/hordeum/",SizecM,"cM.txt",sep=""),quote = F,row.names = F)
 
 print(SPECIES)
 

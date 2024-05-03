@@ -75,7 +75,7 @@ species_list_abrev <- c(
     # Choice of the species
     SPECIES <- species_list[SP]
     
-    data_focal <- read.table(paste("outputs/orthology/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
+    data_focal <- read.table(paste("outputs/orthology/hordeum/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
     data_focal$V1 <- gsub("_simExt","",data_focal$V1)
     data_focal$V1 <- gsub("_lgOrf","",data_focal$V1)
     data_focal$V1 <- gsub("_ESTScan","",data_focal$V1)
@@ -136,7 +136,7 @@ species_list_abrev <- c(
     # Choice of the species
     SPECIES <- species_list[SP]
     
-    data_focal <- read.table(paste("outputs/orthology/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
+    data_focal <- read.table(paste("outputs/orthology/hordeum/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
     data_focal$V1 <- gsub("_simExt","",data_focal$V1)
     data_focal$V1 <- gsub("_lgOrf","",data_focal$V1)
     data_focal$V1 <- gsub("_ESTScan","",data_focal$V1)
@@ -194,7 +194,7 @@ species_list_abrev <- c(
     # Choice of the species
     SPECIES <- species_list[SP]
     
-    data_focal <- read.table(paste("outputs/orthology/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
+    data_focal <- read.table(paste("outputs/orthology/hordeum/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
     data_focal$V1 <- gsub("_simExt","",data_focal$V1)
     data_focal$V1 <- gsub("_lgOrf","",data_focal$V1)
     data_focal$V1 <- gsub("_ESTScan","",data_focal$V1)
