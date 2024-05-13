@@ -46,7 +46,7 @@ for(SP in c(1:13)) {
   # Choice of the species
   # SP <- 11 # An example
   SPECIES <- species_list[SP]
-  data_focal <- read.table(paste("outputs/orthology/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
+  data_focal <- read.table(paste("outputs/orthology/hordeum/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
   data_focal$V1 <- gsub("_simExt","",data_focal$V1)
   data_focal$V1 <- gsub("_lgOrf","",data_focal$V1)
   data_focal$V1 <- gsub("_ESTScan","",data_focal$V1)
@@ -146,7 +146,7 @@ for(SP in c(1:13)) {
   stat <- data.frame(t(c(SPECIES,meanboot,sdboot,ci_inf,ci_sup)))
   names(stat) <- c("species","pimax","b","slope","ratio","pimax_sd","b_sd","slope_sd","ratio_sd","pimax_inf","b_inf","slope_inf","ratio_inf","pimax_sup","b_sup","slope_sup","ratio_sup")
   result <-rbind(result,stat)
-  write.table(result,paste("outputs/recombination/stat_recombination_per_species_Ncat=",Ncat,".txt",sep=""),sep = "\t",quote = F,row.names = F)
+  write.table(result,paste("outputs/recombination/hordeum/stat_recombination_per_species_Ncat=",Ncat,".txt",sep=""),sep = "\t",quote = F,row.names = F)
   
   print(SPECIES)
 }

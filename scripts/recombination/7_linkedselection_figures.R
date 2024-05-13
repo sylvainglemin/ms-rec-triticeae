@@ -58,12 +58,12 @@ pc1 <- pca_individuals$li[,1]
 pc1_mean <- tapply(pc1,aeg$species_code, mean)
 
 mydata <- c()
-for(FILE in list.files(path = "outputs/recombination/",pattern = "Results_BSfit_filter1000") ){
+for(FILE in list.files(path = "outputs/recombination/hordeum/",pattern = "Results_BSfit_filter300") ){
   mydata <-  rbind(mydata, read.table(paste("outputs/recombination/",FILE,sep=""),header=T))
 }
 mydata <- mydata[-6]
-for(FILE in list.files(path = "outputs/recombination/",pattern = "Results_BSfit_FixedFis_filter1000") ){
-  mydata <-  rbind(mydata, read.table(paste("outputs/recombination/",FILE,sep=""),header=T))
+for(FILE in list.files(path = "outputs/recombination/hordeum/",pattern = "Results_BSfit_FixedFis_filter300") ){
+  mydata <-  rbind(mydata, read.table(paste("outputs/recombination/hordeum/",FILE,sep=""),header=T))
 }
 # Replace T_boeticum by T_monococcum so also change species list
 mydata$Species <- ifelse(mydata$Species=="T_boeticum","T_monococcum",mydata$Species)
@@ -76,6 +76,8 @@ mydata$ratio <- mydata$piS_est/mydata$piS_obs
 
 ord <- order(aggregate(mydata$ratio,by = list(mydata$Species),median)$x)
 mydata$Species <- factor(mydata$Species,levels = species_list[ord])
+
+
 
 pdf("figures/sup_mat/linked-selection_model.pdf",width = 8,height = 6)
 par(mar=c(10,6,4,4))

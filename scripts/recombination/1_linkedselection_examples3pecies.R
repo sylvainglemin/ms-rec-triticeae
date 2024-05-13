@@ -38,7 +38,7 @@ for(i in c(1:3)) {
   SP_title <- listsp2[i]
   
   # Prepare datasets for plot along chromosome ###
-  data_focal <- read.table(paste("outputs/orthology/",SPECIES,"_Hordeum_reciprocalbestblast.txt",sep=""),header=T)
+  data_focal <- read.table(paste("outputs/orthology/hordeum/",SPECIES,"_Hordeum_reciprocalbestblast.txt",sep=""),header=T)
   data_focal$Query <- gsub("_simExt","",data_focal$Query)
   data_focal$Query <- gsub("_lgOrf","",data_focal$Query)
   data_focal$Query <- gsub("_ESTScan","",data_focal$Query)
