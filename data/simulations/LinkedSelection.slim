@@ -7,7 +7,7 @@ initialize() {
 
 	if (exists("slimgui")){
 		setwd("/home/miguel/Work/Research/2024_LinkedSelection"); // change to appropriate local settings
-		defineConstant("project", "test"); // project name: prefix for output files
+		defineConstant("replicate", 99); // project name: prefix for output files
 		defineConstant("N", 1000); // pop size
 		defineConstant("sigma", 0.8); // selfing rate
 		defineConstant("n", 15); // sample size
@@ -23,11 +23,12 @@ initialize() {
 		defineConstant("num_of_genes_per_chr", 21); //number of windows in a chromosome
 		defineConstant("num_of_chr", 2); //number of chromosomes (only 1 or 2)
 	}
+	defineConstant("project", "sigma" + sigma + "_rep" + replicate); // project name: prefix for output files
 	if (num_of_chr!=1 & num_of_chr!=2) stop("Error: number of chromosomes must be 1 or 2.");
 	defineConstant("log_interval", 200); // number of generations between logging sumstats (for plotting/checking steady-state)
 	defineConstant("chromosome_size", num_of_genes_per_chr * (gen_size + intergen_size) ); // genome size
 	defineConstant("genome_size", num_of_chr * chromosome_size ); // genome size
-	defineConstant("last_generation", 4 * 5 * N ); // number of generations to run the simulation
+	defineConstant("last_generation", 2 * 5 * N ); // number of generations to run the simulation
 	
 	if (num_of_genes_per_chr%2 == 0){
 		rates = exp(seq(log(max_r), log(min_r), length = asInteger(num_of_genes_per_chr/2)));
