@@ -8,7 +8,7 @@ library(expint)
 # Reading simulation files
 
 
-data_sim <- read.table("data/simulations/sigma0.9_rep2_data_20N.txt",header = T,sep = ",")
+data_sim <- read.table("data/simulations/sigma0.9_rep2_data_10N.txt",header = T,sep = ",")
 data_rec <- read.table("data/simulations/sigma0.9_rep2_gene_map.txt",header = T,sep = ",")
 data_param <- read.table("data/simulations/sigma0.9_rep2_params.txt",header = F,sep = ":")
 

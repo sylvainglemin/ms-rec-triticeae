@@ -9,7 +9,6 @@
 if (!require("ggplot2"))   install.packages("ggplot2", dependencies = TRUE)
 if (!require("parallel"))   install.packages("parallel", dependencies = TRUE)
 
-
 # Option to choose to filter the data
 FILTER <- 300 # Remove windows with less than FILTER complete position
 size <- 1 # Size en cM
@@ -102,7 +101,7 @@ run_fit_free <- function(mydatacM,fisinit,init=NULL) {
   scaling <- c(abs(init[1:7]),1)
   lnL(init)
   # Optimization of the likelihood function
-  ml <- optim(init,lnL,lower=inf,upper=sup,method="L-BFGS-B",control=list(parscale=scaling,maxit=1000,factr=10^7,lmm=20,trace=0))
+  ml <- optim(init,lnL,lower=inf,upper=sup,method="L-BFGS-B",control=list(parscale=scaling,maxit=100,factr=10^7,lmm=5,trace=0))
   #Output
   minLik <- ml$value
   pi_est <- 10^ml$par[1]
@@ -127,7 +126,22 @@ run_fit_free <- function(mydatacM,fisinit,init=NULL) {
   R2efron <- summary(lm(mydatacM$piSyn~mydatacM$pred))$r.squared
   res <- c(SPECIES,WINDOW,mean(mydatacM$piSyn),pi_est,fisinit,f_est,u1_est,s1_est,u2_est,s2_est,u3_est,s3_est,likNull,-minLik,likSat,R2deviance,R2efron)
   names(res) <- c("Species","Windows","piS_obs","piS_est","Fis_obs","Fis_est","u1_est","s1_est","u2_est","s2_est","u3_est","s3_est","lnLNull","lnLMax","lnLSat","R2deviance","R2efron")
-  return(as.list(res))
+  # Control plots
+  G <- ggplot(data=mydatacM,aes(x=Start,y=piSyn)) + geom_point() + geom_line(aes(x=Start,y=pred,col="red"))
+  G <- G +  facet_wrap(~Chromosome,scales = "free_x")
+  G <- G + theme(panel.background = element_rect(fill = "grey95", colour = NA),panel.grid.major = element_blank(), panel.grid.minor = element_blank(),axis.text=element_text(size = 12), axis.text.x=element_text(face= "italic",angle=90,hjust=1,vjust=0.5))
+  G <- G + theme(title = element_text(size = 14),axis.title = element_text(size = 14), legend.position="none",legend.title = element_text(size = 14), legend.text = element_text(size = 12),strip.text = element_text(size = 12, face = "italic"))
+  G <- G + xlab("Chromosome position (in bp)") + ylab(expression(pi[S])) 
+  ggsave(filename = paste("figures/additional/",SPECIES,"_BSfit_",WINDOW,"filter",FILTER,".pdf",sep = ""),plot = G)
+  
+  G <- ggplot(data=mydatacM,aes(x=pred,y=piSyn)) + geom_point()
+  G <- G + scale_x_log10() + scale_y_log10()
+  G <- G + geom_smooth(method = "lm")
+  G <- G + xlab(expression(pi[Pred])) + ylab(expression(pi[Obs])) + ggtitle(SPECIES)
+  G <- G + theme(title = element_text(size = 14),axis.title = element_text(size = 18), axis.text = element_text(size = 14))
+  ggsave(filename = paste("figures/additional/",SPECIES,"_GoF_",WINDOW,"filter",FILTER,".pdf",sep = ""),plot = G)
+  
+  return(res)
 }
 
 ################ #
@@ -190,21 +204,6 @@ for(i in c(1:length(species_list))) {
   
   # Exporting the results
   write(x = result,file = output,ncolumns = length(result),append = T)
-  
-  # Control plots
-  G <- ggplot(data=mydatacM,aes(x=Start,y=piSyn)) + geom_point() + geom_line(aes(x=Start,y=pred,col="red"))
-  G <- G +  facet_wrap(~Chromosome,scales = "free_x")
-  G <- G + theme(panel.background = element_rect(fill = "grey95", colour = NA),panel.grid.major = element_blank(), panel.grid.minor = element_blank(),axis.text=element_text(size = 12), axis.text.x=element_text(face= "italic",angle=90,hjust=1,vjust=0.5))
-  G <- G + theme(title = element_text(size = 14),axis.title = element_text(size = 14), legend.position="none",legend.title = element_text(size = 14), legend.text = element_text(size = 12),strip.text = element_text(size = 12, face = "italic"))
-  G <- G + xlab("Chromosome position (in bp)") + ylab(expression(pi[S])) 
-  ggsave(filename = paste("figures/additional/",SPECIES,"_BSfit_",WINDOW,"filter",FILTER,".pdf",sep = ""),plot = G)
-  
-  G <- ggplot(data=mydatacM,aes(x=pred,y=piSyn)) + geom_point()
-  G <- G + scale_x_log10() + scale_y_log10()
-  G <- G + geom_smooth(method = "lm")
-  G <- G + xlab(expression(pi[Pred])) + ylab(expression(pi[Obs])) + ggtitle(SPECIES)
-  G <- G + theme(title = element_text(size = 14),axis.title = element_text(size = 18), axis.text = element_text(size = 14))
-  ggsave(filename = paste("figures/additional/",SPECIES,"_GoF_",WINDOW,"filter",FILTER,".pdf",sep = ""),plot = G)
   
   # Bootstrap
   if(Nboot > 1) {
