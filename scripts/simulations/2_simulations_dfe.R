@@ -4,18 +4,19 @@
 # March 2024
 
 library(expint)
+library(ggplot2)
 
+
+# 1 - Generating the file with DFE results (not needed to redoing it each time) ####
 source("/Users/sglemin/Documents/Boulot/Recherche/Thematiques/DFE/FastDFE/fast_dfe.R")
 
 # Function to generate SFS
 generate_sfs <- function(i) {
   nS <- dim(df_sfs[df_sfs$selection_coeff==0 & df_sfs$count_in_sample==i,])[1]
   nNS <- dim(df_sfs[df_sfs$selection_coeff<0 & df_sfs$count_in_sample==i,])[1]
-  # To avoid division by 0
-  if(nS*nNS==0) {
-    nS <- nS + 1
-    nNS <- nNS + 1
-  }
+  #To avoid division by 0
+  if(nS==0) nS <- nS + 1
+  if(nNS==0) nNS <- nNS + 0.1
   return(c(nS,nNS))
 }
 
@@ -78,13 +79,13 @@ for(i in c(1:length(tabself))) {
     df_sfs <- mydata
     sfs <- sapply(c(1:(n-1)),generate_sfs)
     estim_tot <- least_square_tot(qns = 1/2,syn = sfs[1,],nonsyn = sfs[2,])
-    pi_tot_obs <-  mean(data_per_gene$piS)
-    Ne_obs <- pi_tot_obs/(4*mu)
-    Smean_obs <- 4*Ne_obs*(h + Fis - h*Fis)*smean
+    pi_obs_tot <-  mean(data_per_gene$piS)
+    Ne_obs_tot <- pi_obs_tot/(4*mu)
+    Smean_obs_tot <- 4*Ne_obs_tot*(h + Fis - h*Fis)*smean
     Sbound <- 10 # Proportion: 0 < S < 10
-    f0_tot_obs <- 1 - gammainc(estim_tot$shape,Sbound*estim_tot$shape/estim_tot$Sdel)/gamma(estim_tot$shape)
-    f0_tot_pred <- 1 - gammainc(shape,Sbound*shape/Smean)/gamma(shape)
-    f0_tot_adj <- 1 - gammainc(shape,Sbound*shape/Smean_obs)/gamma(shape)
+    f0_obs_tot <- 1 - gammainc(estim_tot$shape,Sbound*estim_tot$shape/estim_tot$Sdel)/gamma(estim_tot$shape)
+    f0_pred_tot <- 1 - gammainc(shape,Sbound*shape/Smean)/gamma(shape)
+    f0_adj_tot <- 1 - gammainc(shape,Sbound*shape/Smean_obs_tot)/gamma(shape)
     omega_tot <- estim_tot$p*estim_tot$Sadv
     
     # High recombination
@@ -92,75 +93,89 @@ for(i in c(1:length(tabself))) {
     sfs <- sapply(c(1:(n-1)),generate_sfs)
     estim_high <- least_square_tot(qns = 1/2,syn = sfs[1,],nonsyn = sfs[2,])
     pi_obs_high <- mean(data_per_gene[data_per_gene$rate > quantile(data_per_gene$rate,0.5),]$piS)
-    Ne_obs <- pi_tot_obs/(4*mu)
-    Smean_obs <- 4*Ne_obs*(h + Fis - h*Fis)*smean
+    Ne_obs_high <- pi_obs_high/(4*mu)
+    Smean_obs_high <- 4*Ne_obs_high*(h + Fis - h*Fis)*smean
     Sbound <- 10 # Proportion: 0 < S < 10
-    f0_tot_obs <- 1 - gammainc(estim_tot$shape,Sbound*estim_tot$shape/estim_tot$Sdel)/gamma(estim_tot$shape)
-    f0_tot_pred <- 1 - gammainc(shape,Sbound*shape/Smean)/gamma(shape)
-    f0_tot_adj <- 1 - gammainc(shape,Sbound*shape/Smean_obs)/gamma(shape)
-    omega_tot <- estim_tot$p*estim_tot$Sadv
-    estim_high <- least_square_del(qns = 2,syn = sfs[1,],nonsyn = sfs[2,])
+    f0_obs_high <- 1 - gammainc(estim_high$shape,Sbound*estim_high$shape/estim_high$Sdel)/gamma(estim_high$shape)
+    f0_pred_high <- 1 - gammainc(shape,Sbound*shape/Smean)/gamma(shape)
+    f0_adj_high <- 1 - gammainc(shape,Sbound*shape/Smean_obs_high)/gamma(shape)
+    omega_high <- estim_high$p*estim_high$Sadv
     
+    # Low recombination
+    df_sfs <- mydata[mydata$rate <= quantile(mydata$rate,0.5),]
+    sfs <- sapply(c(1:(n-1)),generate_sfs)
+    estim_low <- least_square_tot(qns = 1/2,syn = sfs[1,],nonsyn = sfs[2,])
+    pi_obs_low <- mean(data_per_gene[data_per_gene$rate <= quantile(data_per_gene$rate,0.5),]$piS)
+    Ne_obs_low <- pi_obs_low/(4*mu)
+    Smean_obs_low <- 4*Ne_obs_low*(h + Fis - h*Fis)*smean
+    Sbound <- 10 # Proportion: 0 < S < 10
+    f0_obs_low <- 1 - gammainc(estim_low$shape,Sbound*estim_low$shape/estim_low$Sdel)/gamma(estim_low$shape)
+    f0_pred_low <- 1 - gammainc(shape,Sbound*shape/Smean)/gamma(shape)
+    f0_adj_low <- 1 - gammainc(shape,Sbound*shape/Smean_obs_low)/gamma(shape)
+    omega_low <- estim_low$p*estim_low$Sadv
+    estim_low <- least_square_del(qns = 2,syn = sfs[1,],nonsyn = sfs[2,])
     
-    
-    
-    
-    1 - gammainc(estim$shape,estim$shape/estim$Smean)/gamma(estim$shape)
-    1 - gammainc(0.5,0.5/Se)/gamma(0.5)
-    
-    
+    res_tot <- c(s,j,"tot",pi_obs_tot,Ne_obs_tot,Smean_obs_tot,f0_obs_tot,f0_pred_tot,f0_adj_tot,omega_tot)
+    res_high <- c(s,j,"high",pi_obs_high,Ne_obs_high,Smean_obs_high,f0_obs_high,f0_pred_high,f0_adj_high,omega_high)
+    res_low <- c(s,j,"low",pi_obs_low,Ne_obs_low,Smean_obs_low,f0_obs_low,f0_pred_low,f0_adj_low,omega_low)
+    result <- rbind(result,res_tot,res_high,res_low)
+  }
+  print(i)
+}
+
+result <- data.frame(result)
+names(result) <- c("self","rep","rec","pi","Ne","Smean","f0_obs","f0_pred","f0_adj","omega")
+write.table(result,"outputs/simulations/simul_dfe.txt",row.names = F)
+
+
+# 2 - Analyzing the results ####
+
+# Function to merge multiple plots
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+  numPlots = length(plots)
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                     ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+  if (numPlots==1) {
+    print(plots[[1]])
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
   }
 }
 
+mydata <- read.table("outputs/simulations/simul_dfe.txt",header = T)
 
+G1 <- ggplot(data = mydata, aes(x = as.factor(self),y = f0_obs,col=rec)) +
+  geom_boxplot(outliers = F) +
+  scale_color_discrete(name = "Recombination") +
+  geom_boxplot(aes(x = as.factor(self),y = f0_adj,fill=rec),col="black",outliers = F) +
+  scale_fill_discrete(name = "Recombination") +
+  xlab("Selfing rate") +
+  ylab(expression("% of weakly deleterious mutations (-10 < 4"*italic(N[e])*italic(s)*" < 0)"))
 
+G2 <- ggplot(data = mydata, aes(x = as.factor(self),y = omega,col=rec)) +
+  geom_boxplot(outliers = F) +
+  scale_color_discrete(name = "Recombination") +
+  xlab("Selfing rate") +
+  ylab(expression("Adaptive substitution rate ("*omega[a]*")"))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Test of the estimation of the DFE ####
-
-source("/Users/sglemin/Documents/Boulot/Recherche/Thematiques/DFE/FastDFE/fast_dfe.R")
-
-
-df_sfs <- mydata[mydata$rate > quantile(mydata$rate,0.25),]
-pi <- mean(data_per_gene[data_per_gene$rate > quantile(data_per_gene$rate,0.25),]$piS)
-ratio <- (0.04/3)/pi
-Ne <- pi /(4*10^(-6))
-h <- 0.5
-s <- 0.01
-F <- 0
-Se <- 4*Ne*(h+F-h*F)*s
-Se
-
-generate_sfs <- function(i) {
-  nS <- dim(df_sfs[df_sfs$selection_coeff==0 & df_sfs$count_in_sample==i,])[1]
-  nNS <- dim(df_sfs[df_sfs$selection_coeff<0 & df_sfs$count_in_sample==i,])[1]
-  return(c(nS,nNS))
-}
-sfs <- sapply(c(1:14),generate_sfs)
-estim <- least_square_del(qns = 2,syn = sfs[1,],nonsyn = sfs[2,])
-
-1 - gammainc(estim$shape,estim$shape/estim$Smean)/gamma(estim$shape)
-1 - gammainc(0.5,0.5/Se)/gamma(0.5)
+pdf("figures/sup_mat/Simulations_DFE_Recombination.pdf",width = 8,height = 12)
+multiplot(G1,G2)
+dev.off()
