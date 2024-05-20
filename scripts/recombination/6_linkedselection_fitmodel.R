@@ -9,12 +9,14 @@
 if (!require("ggplot2"))   install.packages("ggplot2", dependencies = TRUE)
 if (!require("parallel"))   install.packages("parallel", dependencies = TRUE)
 
+PATH <- NULL
+
 # Option to choose to filter the data
 FILTER <- 300 # Remove windows with less than FILTER complete position
 size <- 1 # Size en cM
 # Option to choose for bootsptrap and parallelisation
-Nboot <- 1000
-Ncores <- 24
+Nboot <- 100
+Ncores <- 96
 
 ############## #
 # Functions ####
@@ -37,54 +39,54 @@ JC <- function(x) -3*(-1+exp(-4*x/3))/4
 # Set a limit when exact 0 is not allowed
 ZERO <- 10^(-50)
 
-# Likelihood function, Fis estimated
 
-lnL <- function(par) {
-  pi0 <- 10^par[1]
-  u1 <- 10^par[2]
-  u2 <- 10^(par[2]+par[3])
-  u3 <- 10^(par[2]+par[3]+par[4])
-  s1 <- 10^par[5]
-  s2 <- 10^par[6]
-  s3 <- 10^par[7]
-  fis <- par[8]
-  #fis <- fis_list[i]
-  mydatacM$BS1 <- mapply(function(x,y) BScoef(chrom = x,pos = y,sel = s1,fis = fis),x=mydatacM$Chromosome,y=mydatacM$poscM)
-  mydatacM$BS2 <- mapply(function(x,y) BScoef(chrom = x,pos = y,sel = s2,fis = fis),x=mydatacM$Chromosome,y=mydatacM$poscM)
-  mydatacM$BS3 <- mapply(function(x,y) BScoef(chrom = x,pos = y,sel = s3,fis = fis),x=mydatacM$Chromosome,y=mydatacM$poscM)
-  theta <- mydatacM$reldiv*pi0*mydatacM$nb_complete_site*exp(-u1*mydatacM$BS1-u2*mydatacM$BS2-u3*mydatacM$BS3) + ZERO
-  k <- round(mydatacM$piSyn*mydatacM$nb_complete_site,0)
-  lik <- sum(k*log(theta)-(k+1)*log(theta+1))
-  return(-lik)
-}
 
 
 
 # Likelihood function, Fis fixed
-lnLfixfis <- function(par) {
-  pi0 <- 10^par[1]
-  u1 <- 10^par[2]
-  u2 <- 10^(par[2]+par[3])
-  u3 <- 10^(par[2]+par[3]+par[4])
-  s1 <- 10^par[5]
-  s2 <- 10^par[6]
-  s3 <- 10^par[7]
-  #fis <- fis_list[i]
-  mydatacM$BS1 <- mapply(function(x,y) BScoef(chrom = x,pos = y,sel = s1,fis = fis),x=mydatacM$Chromosome,y=mydatacM$poscM)
-  mydatacM$BS2 <- mapply(function(x,y) BScoef(chrom = x,pos = y,sel = s2,fis = fis),x=mydatacM$Chromosome,y=mydatacM$poscM)
-  mydatacM$BS3 <- mapply(function(x,y) BScoef(chrom = x,pos = y,sel = s3,fis = fis),x=mydatacM$Chromosome,y=mydatacM$poscM)
-  theta <- mydatacM$reldiv*pi0*mydatacM$nb_complete_site*exp(-u1*mydatacM$BS1-u2*mydatacM$BS2-u3*mydatacM$BS3) + ZERO
-  k <- round(mydatacM$piSyn*mydatacM$nb_complete_site,0)
-  lik <- sum(k*log(theta)-(k+1)*log(theta+1))
-  return(-lik)
-}
+# lnLfixfis <- function(par) {
+#   pi0 <- 10^par[1]
+#   u1 <- 10^par[2]
+#   u2 <- 10^(par[2]+par[3])
+#   u3 <- 10^(par[2]+par[3]+par[4])
+#   s1 <- 10^par[5]
+#   s2 <- 10^par[6]
+#   s3 <- 10^par[7]
+#   #fis <- fis_list[i]
+#   mydatacM$BS1 <- mapply(function(x,y) BScoef(chrom = x,pos = y,sel = s1,fis = fis),x=mydatacM$Chromosome,y=mydatacM$poscM)
+#   mydatacM$BS2 <- mapply(function(x,y) BScoef(chrom = x,pos = y,sel = s2,fis = fis),x=mydatacM$Chromosome,y=mydatacM$poscM)
+#   mydatacM$BS3 <- mapply(function(x,y) BScoef(chrom = x,pos = y,sel = s3,fis = fis),x=mydatacM$Chromosome,y=mydatacM$poscM)
+#   theta <- mydatacM$reldiv*pi0*mydatacM$nb_complete_site*exp(-u1*mydatacM$BS1-u2*mydatacM$BS2-u3*mydatacM$BS3) + ZERO
+#   k <- round(mydatacM$piSyn*mydatacM$nb_complete_site,0)
+#   lik <- sum(k*log(theta)-(k+1)*log(theta+1))
+#   return(-lik)
+# }
 
 
 
 # Function to run the optimization, fis free
 
-run_fit_free <- function(mydatacM,fisinit,init=NULL) {
+run_fit_free <- function(mydatacM,fisinit,init=NULL,PRINT=F) {
   #fisinit <- fis_list[i]
+  # Likelihood function, Fis estimated
+  lnL <- function(par) {
+    pi0 <- 10^par[1]
+    u1 <- 10^par[2]
+    u2 <- 10^(par[2]+par[3])
+    u3 <- 10^(par[2]+par[3]+par[4])
+    s1 <- 10^par[5]
+    s2 <- 10^par[6]
+    s3 <- 10^par[7]
+    fis <- par[8]
+    #fis <- fis_list[i]
+    mydatacM$BS1 <- mapply(function(x,y) BScoef(chrom = x,pos = y,sel = s1,fis = fis),x=mydatacM$Chromosome,y=mydatacM$poscM)
+    mydatacM$BS2 <- mapply(function(x,y) BScoef(chrom = x,pos = y,sel = s2,fis = fis),x=mydatacM$Chromosome,y=mydatacM$poscM)
+    mydatacM$BS3 <- mapply(function(x,y) BScoef(chrom = x,pos = y,sel = s3,fis = fis),x=mydatacM$Chromosome,y=mydatacM$poscM)
+    theta <- mydatacM$reldiv*pi0*mydatacM$nb_complete_site*exp(-u1*mydatacM$BS1-u2*mydatacM$BS2-u3*mydatacM$BS3) + ZERO
+    k <- round(mydatacM$piSyn*mydatacM$nb_complete_site,0)
+    lik <- sum(k*log(theta)-(k+1)*log(theta+1))
+    return(-lik)
+  }
   if(is.null(init)) {
     pi0init <- log10(2*mean(mydatacM$piSyn)/(1-fisinit))
     u1init <- log10(10^(-9))
@@ -99,7 +101,7 @@ run_fit_free <- function(mydatacM,fisinit,init=NULL) {
   inf <- c(-3,-13,-3,-3,-4,-4,-4,0)
   sup <- c(3,-7,0,0,0,0,0,0.99)
   scaling <- c(abs(init[1:7]),1)
-  lnL(init)
+  #lnL(init)
   # Optimization of the likelihood function
   ml <- optim(init,lnL,lower=inf,upper=sup,method="L-BFGS-B",control=list(parscale=scaling,maxit=100,factr=10^7,lmm=5,trace=0))
   #Output
@@ -127,20 +129,21 @@ run_fit_free <- function(mydatacM,fisinit,init=NULL) {
   res <- c(SPECIES,WINDOW,mean(mydatacM$piSyn),pi_est,fisinit,f_est,u1_est,s1_est,u2_est,s2_est,u3_est,s3_est,likNull,-minLik,likSat,R2deviance,R2efron)
   names(res) <- c("Species","Windows","piS_obs","piS_est","Fis_obs","Fis_est","u1_est","s1_est","u2_est","s2_est","u3_est","s3_est","lnLNull","lnLMax","lnLSat","R2deviance","R2efron")
   # Control plots
-  G <- ggplot(data=mydatacM,aes(x=Start,y=piSyn)) + geom_point() + geom_line(aes(x=Start,y=pred,col="red"))
-  G <- G +  facet_wrap(~Chromosome,scales = "free_x")
-  G <- G + theme(panel.background = element_rect(fill = "grey95", colour = NA),panel.grid.major = element_blank(), panel.grid.minor = element_blank(),axis.text=element_text(size = 12), axis.text.x=element_text(face= "italic",angle=90,hjust=1,vjust=0.5))
-  G <- G + theme(title = element_text(size = 14),axis.title = element_text(size = 14), legend.position="none",legend.title = element_text(size = 14), legend.text = element_text(size = 12),strip.text = element_text(size = 12, face = "italic"))
-  G <- G + xlab("Chromosome position (in bp)") + ylab(expression(pi[S])) 
-  ggsave(filename = paste("figures/additional/",SPECIES,"_BSfit_",WINDOW,"filter",FILTER,".pdf",sep = ""),plot = G)
-  
-  G <- ggplot(data=mydatacM,aes(x=pred,y=piSyn)) + geom_point()
-  G <- G + scale_x_log10() + scale_y_log10()
-  G <- G + geom_smooth(method = "lm")
-  G <- G + xlab(expression(pi[Pred])) + ylab(expression(pi[Obs])) + ggtitle(SPECIES)
-  G <- G + theme(title = element_text(size = 14),axis.title = element_text(size = 18), axis.text = element_text(size = 14))
-  ggsave(filename = paste("figures/additional/",SPECIES,"_GoF_",WINDOW,"filter",FILTER,".pdf",sep = ""),plot = G)
-  
+  if(PRINT){
+    G <- ggplot(data=mydatacM,aes(x=Start,y=piSyn)) + geom_point() + geom_line(aes(x=Start,y=pred,col="red"))
+    G <- G +  facet_wrap(~Chromosome,scales = "free_x")
+    G <- G + theme(panel.background = element_rect(fill = "grey95", colour = NA),panel.grid.major = element_blank(), panel.grid.minor = element_blank(),axis.text=element_text(size = 12), axis.text.x=element_text(face= "italic",angle=90,hjust=1,vjust=0.5))
+    G <- G + theme(title = element_text(size = 14),axis.title = element_text(size = 14), legend.position="none",legend.title = element_text(size = 14), legend.text = element_text(size = 12),strip.text = element_text(size = 12, face = "italic"))
+    G <- G + xlab("Chromosome position (in bp)") + ylab(expression(pi[S])) 
+    ggsave(filename = paste("figures/additional/",SPECIES,"_BSfit_",WINDOW,"filter",FILTER,".pdf",sep = ""),plot = G)
+    G <- ggplot(data=mydatacM,aes(x=pred,y=piSyn)) + geom_point()
+    G <- G + scale_x_log10() + scale_y_log10()
+    G <- G + geom_smooth(method = "lm")
+    G <- G + xlab(expression(pi[Pred])) + ylab(expression(pi[Obs])) + ggtitle(SPECIES)
+    G <- G + theme(title = element_text(size = 14),axis.title = element_text(size = 18), axis.text = element_text(size = 14))
+    ggsave(filename = paste(PATH,"figures/additional/",SPECIES,"_GoF_",WINDOW,"filter",FILTER,".pdf",sep = ""),plot = G)
+  }
+
   return(res)
 }
 
@@ -180,7 +183,8 @@ fis_list <- c(0.9,
 
 # Estimation Free Fis ####
 
-output <- paste("outputs/recombination/hordeum/Results_BSfit_filter",FILTER,"_window",size,"cM.txt",sep="")
+
+output <- paste(PATH,"outputs/recombination/hordeum/Results_BSfit_filter",FILTER,"_window",size,"cM.txt",sep="")
 varnames <- c("Species","Windows","piS_obs","piS_est","Fis_obs","Fis_est","u1_est","s1_est","u2_est","s2_est","u3_est","s3_est","lnLNull","lnLMax","lnLSat","R2deviance","R2efron")
 write(x = varnames,file = output,ncolumns = length(varnames),append = F)
 
@@ -190,9 +194,9 @@ for(i in c(1:length(species_list))) {
   
   # Preparing the file
   WINDOW <- paste(size,"cM",sep = "")
-  data_hordeumcM <- read.table(paste("outputs/recombination/hordeum/data_hordeum",WINDOW,".txt",sep=""),header = T)
+  data_hordeumcM <- read.table(paste(PATH,"outputs/recombination/hordeum/data_hordeum",WINDOW,".txt",sep=""),header = T)
   SPECIES <- species_list[i]
-  FILE <- paste("outputs/recombination/hordeum/",SPECIES,WINDOW,".txt",sep="")
+  FILE <- paste(PATH,"outputs/recombination/hordeum/",SPECIES,WINDOW,".txt",sep="")
   mydatacM <- read.table(FILE,header = T)
   mydatacM <- mydatacM[!is.na(mydatacM$piSyn),]
   mydatacM$reldiv <- mydatacM$div/mean(mydatacM$div)
@@ -200,7 +204,7 @@ for(i in c(1:length(species_list))) {
   mydatacM <- mydatacM[mydatacM$nb_complete_site>FILTER,]
   
   # Runing the model on the orginal data
-  result <- run_fit_free(mydatacM = mydatacM,fisinit=fis_list[i])
+  result <- run_fit_free(mydatacM = mydatacM,fisinit=fis_list[i],PRINT=T)
   
   # Exporting the results
   write(x = result,file = output,ncolumns = length(result),append = T)
@@ -214,13 +218,13 @@ for(i in c(1:length(species_list))) {
     result <- as.list(result)
     names(result) <- varnames
     init_boot <- c(
-      as.numeric(result$piS_est),
-      as.numeric(result$u1_est),
+      log10(as.numeric(result$piS_est)),
+      log10(as.numeric(result$u1_est)),
       log10(as.numeric(result$u2_est))-log10(as.numeric(result$u1_est)),
       log10(as.numeric(result$u3_est))-log10(as.numeric(result$u2_est)),
-      as.numeric(result$s1_est),
-      as.numeric(result$s2_est),
-      as.numeric(result$s3_est),
+      log10(as.numeric(result$s1_est)),
+      log10(as.numeric(result$s2_est)),
+      log10(as.numeric(result$s3_est)),
       as.numeric(result$Fis_est)
       )
     ww <- mclapply(
@@ -231,7 +235,7 @@ for(i in c(1:length(species_list))) {
       )
     result_boot <- data.frame(matrix(unlist(ww), nrow=length(ww), byrow=TRUE))
     names(result_boot) <- varnames
-    out_boot <- paste("outputs/recombination/hordeum/Bootstrap_",SPECIES,"_filter",FILTER,"_window",size,"cM.txt",sep="")
+    out_boot <- paste(PATH,"outputs/recombination/hordeum/Bootstrap_",SPECIES,"_filter",FILTER,"_window",size,"cM.txt",sep="")
     write.table(x = result_boot,file = out_boot,quote = F,row.names = F)
   }
   
