@@ -10,7 +10,7 @@ if (!require("ggplot2"))   install.packages("ggplot2", dependencies = TRUE)
 if (!require("parallel"))   install.packages("parallel", dependencies = TRUE)
 
 PATH <- NULL
-# PATH <- "scratch/sglemin/ms-rec-triticeae/"
+# PATH <- "/scratch/sglemin/ms-rec-triticeae/"
 
 # Option to choose to filter the data
 FILTER <- 300 # Remove windows with less than FILTER complete position
@@ -136,7 +136,7 @@ run_fit_free <- function(mydatacM,fisinit,init=NULL,PRINT=F) {
     G <- G + theme(panel.background = element_rect(fill = "grey95", colour = NA),panel.grid.major = element_blank(), panel.grid.minor = element_blank(),axis.text=element_text(size = 12), axis.text.x=element_text(face= "italic",angle=90,hjust=1,vjust=0.5))
     G <- G + theme(title = element_text(size = 14),axis.title = element_text(size = 14), legend.position="none",legend.title = element_text(size = 14), legend.text = element_text(size = 12),strip.text = element_text(size = 12, face = "italic"))
     G <- G + xlab("Chromosome position (in bp)") + ylab(expression(pi[S])) 
-    ggsave(filename = paste("figures/additional/triticum_recmap/",SPECIES,"_BSfit_genome",GENOME,"_",WINDOW,"filter",FILTER,".pdf",sep = ""),plot = G)
+    ggsave(filename = paste(PATH,"figures/additional/triticum_recmap/",SPECIES,"_BSfit_genome",GENOME,"_",WINDOW,"filter",FILTER,".pdf",sep = ""),plot = G)
     G <- ggplot(data=mydatacM,aes(x=pred,y=piSyn)) + geom_point()
     G <- G + scale_x_log10() + scale_y_log10()
     G <- G + geom_smooth(method = "lm")
