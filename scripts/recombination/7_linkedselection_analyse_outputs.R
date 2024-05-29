@@ -3,6 +3,7 @@
 # September 2021, updated November 2022
 
 if (!require("ggplot2"))   install.packages("ggplot2", dependencies = TRUE)
+if (!require("plotrix"))   install.packages("plotrix", dependencies = TRUE)
 
 species_list <- c(
   "Ae_bicornis",
@@ -62,10 +63,24 @@ for(FILE in list.files(path = "outputs/recombination/hordeum/",pattern = "Result
   mydata <-  rbind(mydata, read.table(paste("outputs/recombination/hordeum/",FILE,sep=""),header=T))
 }
 
+mydata_inf <- c()
+mydata_sup <- c()
+mydata_mean <- c()
 for(FILE in list.files(path = "outputs/recombination/hordeum/",pattern = "Bootstrap") ){
   df <- read.table(paste("outputs/recombination/hordeum/",FILE,sep=""),header=T)
-  mydata <-  rbind(mydata, read.table(paste("outputs/recombination/hordeum/",FILE,sep=""),header=T))
+  inf <- apply(df[-c(1,2)],2,function(x)  sort(x)[3])
+  sup <- apply(df[-c(1,2)],2,function(x)  sort(x)[97])
+  moy <- apply(df[-c(1,2)],2,mean) 
+  mydata_inf <- rbind(mydata_inf,inf)
+  mydata_sup <- rbind(mydata_sup,sup)
+  mydata_mean <- rbind(mydata_mean,moy)
 }
+mydata_inf <- data.frame(mydata_inf,row.names = NULL)
+mydata_inf <- cbind("Species"=species_list,mydata_inf)
+mydata_sup <- data.frame(mydata_sup,row.names = NULL)
+mydata_sup <- cbind("Species"=species_list,mydata_sup)
+mydata_mean <- data.frame(mydata_mean,row.names = NULL)
+mydata_mean <- cbind("Species"=species_list,mydata_mean)
 
 #mydata <- mydata[-6]
 # for(FILE in list.files(path = "outputs/recombination/hordeum/",pattern = "Results_BSfit_FixedFis_filter300") ){
@@ -75,22 +90,28 @@ for(FILE in list.files(path = "outputs/recombination/hordeum/",pattern = "Bootst
 
 
 mydata$Species <- ifelse(mydata$Species=="T_boeticum","T_monococcum",mydata$Species)
-
 mydata$spcode <- spcode[match(mydata$Species,species_list)]
 mydata$pc1 <- pc1_mean[match(mydata$Species,species_list)]
 mydata$ratio <- mydata$piS_est/mydata$piS_obs
 ord <- order(aggregate(mydata$ratio,by = list(mydata$Species),median)$x)
 mydata$Species <- factor(mydata$Species,levels = species_list[ord])
 
-
-
-
-
-
-
-
-
-
+x <- mydata$pc1
+y <- mydata_mean$piS_est
+#species <- mydata$sp
+pi_inf <- mydata_inf$piS_est
+pi_sup <- mydata_sup$piS_est
+plot(x,y, 
+     xlab="", ylab=expression(italic(pi)[S]~(log[10]~scale)), 
+     xlim= c(min(x)-0.15, max(x)+0.15), 
+     ylim = c(0.1*min(y),max(y)*1.5),
+    # log="y",
+     pch=18, cex.lab= 1.4,
+     col=mycol) 
+plotCI(x,y, li=pi_inf, ui=pi_sup, add=T,
+       col=mycol, pch=18, cex=1.4, lwd=2)
+abline(lm(log10(y)~x))
+#axis(side=2, at=c(0.01,0.05,0.1,0.5,1,2), labels=c(0.01,0.05,0.1,0.5,1,2),cex.axis=1, padj=1)
 
 
 

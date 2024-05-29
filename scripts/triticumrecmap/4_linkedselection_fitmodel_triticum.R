@@ -238,7 +238,7 @@ for(GENOME in c("A","B","D")){
       )
       result_boot <- data.frame(matrix(unlist(ww), nrow=length(ww), byrow=TRUE))
       names(result_boot) <- varnames
-      out_boot <- paste(PATH,"outputs/recombination/triticum/Bootstrap_",SPECIES,"_filter",FILTER,"_window",size,"cM.txt",sep="")
+      out_boot <- paste(PATH,"outputs/recombination/triticum/Bootstrap_",SPECIES,"_genome",GENOME,"_filter",FILTER,"_window",size,"cM.txt",sep="")
       write.table(x = result_boot,file = out_boot,quote = F,row.names = F)
     }
     
