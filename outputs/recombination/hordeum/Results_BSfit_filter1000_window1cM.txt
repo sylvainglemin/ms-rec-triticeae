@@ -1,1 +1,0 @@
-Species Windows piS_obs piS_est Fis_obs Fis_est fdel s_del usweep tau lnLNull lnLMax lnLSat R2deviance R2efron

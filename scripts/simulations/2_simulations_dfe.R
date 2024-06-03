@@ -179,3 +179,7 @@ G2 <- ggplot(data = mydata, aes(x = as.factor(self),y = omega,col=rec)) +
 pdf("figures/sup_mat/Simulations_DFE_Recombination.pdf",width = 8,height = 12)
 multiplot(G1,G2)
 dev.off()
+
+jpeg("figures/sup_mat/Simulations_DFE_Recombination.jpeg",width = 800,height = 1200)
+multiplot(G1,G2)
+dev.off()

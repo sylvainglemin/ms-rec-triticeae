@@ -1,9 +1,10 @@
-# Script to retrieve results of the linked selection model and combine them into figure
+# Script to compare the results of the linked selection model with the different reference genomes
 # Sylvain Glémin (CNRS Rennes, France)
 # September 2021, updated November 2022
 
 if (!require("ggplot2"))   install.packages("ggplot2", dependencies = TRUE)
 if (!require("plotrix"))   install.packages("plotrix", dependencies = TRUE)
+if (!require("dplyr"))   install.packages("dplyr", dependencies = TRUE)
 
 species_list <- c(
   "Ae_bicornis",
@@ -65,6 +66,12 @@ for(FILE in list.files(path = "outputs/recombination/triticum/",pattern = "Resul
 names(mydata)[1] <- "Genome"
 mydata <- cbind("Species"=rep(row.names(mydata[c(1:13),]),3),mydata)
 
+dataHordeum <-  read.table("outputs/recombination/hordeum/Results_BSfit_filter300_window1cM.txt",header=T)
+dataHordeum$Genome <- "H"
+col <- colnames(dataHordeum)
+colreorderd <- c(col[1],col[length(col)],col[c(2:(length(col)-1))])
+mydata <- rbind(mydata,dataHordeum[,colreorderd])
+
 mydata_inf <- c()
 mydata_sup <- c()
 mydata_mean <- c()
@@ -99,25 +106,73 @@ ord <- order(aggregate(mydata$ratio,by = list(mydata$Species),median)$x)
 mydata$Species <- factor(mydata$Species,levels = species_list[ord])
 
 
-owngenome <- mydata[c(12,13,18,21,27:30,32,33,35:37),]
+
+#owngenome <- mydata[c(12,13,18,21,27:30,32,33,35:37),]
 
 
-x <- owngenome$pc1
-y <- owngenome$piS_est
-#species <- mydata$sp
-pi_inf <- mydata_inf$piS_est
-pi_sup <- mydata_sup$piS_est
+#pdf("figures/sup_mat/linked-selection_compare_maps.pdf",width = 8,height = 6,pointsize = 18)
+jpeg("figures/sup_mat/linked-selection_compare_maps.jpeg",width = 1600,height = 700,pointsize = 18)
+
+layout(matrix(c(1,2),ncol = 2))
+
+# Figure piMax vs PC1
+x <- mydata$pc1
+y <- mydata$piS_est
+shape <- case_when(
+  mydata$Genome=="A" ~ 1,
+  mydata$Genome=="B" ~ 2,
+  mydata$Genome=="D" ~ 5,
+  mydata$Genome=="H" ~ 16
+)
 plot(x,y, 
-     xlab="", ylab=expression(italic(pi)[S]~(log[10]~scale)), 
+     xlab="PC1", ylab=expression(italic(pi)[max]~(log[10]~scale)), 
      xlim= c(min(x)-0.15, max(x)+0.15), 
      ylim = c(0.1*min(y),max(y)*1.5),
      log="y",
-     pch=18, cex.lab= 1.4,
-     col=mycol[match(owngenome$spcode,spcode)]) 
-plotCI(x,y, li=pi_inf, ui=pi_sup, add=T,
-       col=mycol, pch=18, cex=1.4, lwd=2)
-abline(lm(log10(y)~x))
-#axis(side=2, at=c(0.01,0.05,0.1,0.5,1,2), labels=c(0.01,0.05,0.1,0.5,1,2),cex.axis=1, padj=1)
+     pch=shape, cex.lab= 1.4,
+     col=mycol[match(mydata$spcode,spcode)]) 
+abline(lm(log10(y[which(mydata$Genome=="A" )])~x[which(mydata$Genome=="A" )]),lty=2)
+abline(lm(log10(y[which(mydata$Genome=="B" )])~x[which(mydata$Genome=="B" )]),lty=3)
+abline(lm(log10(y[which(mydata$Genome=="D" )])~x[which(mydata$Genome=="D" )]),lty=4)
+abline(lm(log10(y[which(mydata$Genome=="H" )])~x[which(mydata$Genome=="H" )]),lwd=2)
+points(x,y, 
+       xlab="PC1", ylab=expression(italic(pi)[S]~(log[10]~scale)), 
+       xlim= c(min(x)-0.15, max(x)+0.15), 
+       ylim = c(0.1*min(y),max(y)*1.5),
+       pch=shape, cex.lab= 1.4,
+       col=mycol[match(mydata$spcode,spcode)]) 
+
+# Figure piMax vs species range
+polym <- as.data.frame(t(read.delim("data/polymorphism/Summary_polymorphism_Triticeae_extended.csv", row.names=1, sep=";")))
+
+x <- rep(polym$Species_range_grid_1.0[c(1:13)],4)
+y <- mydata$piS_est
+shape <- case_when(
+  mydata$Genome=="A" ~ 1,
+  mydata$Genome=="B" ~ 2,
+  mydata$Genome=="D" ~ 5,
+  mydata$Genome=="H" ~ 16
+)
+plot(x,y, 
+     xlab="Species range (in 1000 km2)", ylab=expression(italic(pi)[max]~(log[10]~scale)), 
+     xlim= c(min(x)-0.15, max(x)+0.15), 
+     ylim = c(0.1*min(y),max(y)*1.5),
+     log="xy",
+     pch=shape, cex.lab= 1.4,
+     col=mycol[match(mydata$spcode,spcode)]) 
+abline(lm(log10(y[which(mydata$Genome=="A" )])~log10(x[which(mydata$Genome=="A" )])),lty=2)
+abline(lm(log10(y[which(mydata$Genome=="B" )])~log10(x[which(mydata$Genome=="B" )])),lty=3)
+abline(lm(log10(y[which(mydata$Genome=="D" )])~log10(x[which(mydata$Genome=="D" )])),lty=4)
+abline(lm(log10(y[which(mydata$Genome=="H" )])~log10(x[which(mydata$Genome=="H" )])),lwd=2)
+points(x,y, 
+       xlab="PC1", ylab=expression(italic(pi)[S]~(log[10]~scale)), 
+       xlim= c(min(x)-0.15, max(x)+0.15), 
+       ylim = c(0.1*min(y),max(y)*1.5),
+       pch=shape, cex.lab= 1.4,
+       col=mycol[match(mydata$spcode,spcode)]) 
+
+dev.off()
+
 
 
 

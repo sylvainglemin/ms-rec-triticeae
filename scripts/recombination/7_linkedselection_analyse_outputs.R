@@ -66,14 +66,17 @@ for(FILE in list.files(path = "outputs/recombination/hordeum/",pattern = "Result
 mydata_inf <- c()
 mydata_sup <- c()
 mydata_mean <- c()
+mydata_weight <- c()
 for(FILE in list.files(path = "outputs/recombination/hordeum/",pattern = "Bootstrap") ){
   df <- read.table(paste("outputs/recombination/hordeum/",FILE,sep=""),header=T)
   inf <- apply(df[-c(1,2)],2,function(x)  sort(x)[3])
   sup <- apply(df[-c(1,2)],2,function(x)  sort(x)[97])
   moy <- apply(df[-c(1,2)],2,mean) 
+  w <- apply(df[-c(1,2)],2, function(x) 1/var(log(x))) 
   mydata_inf <- rbind(mydata_inf,inf)
   mydata_sup <- rbind(mydata_sup,sup)
   mydata_mean <- rbind(mydata_mean,moy)
+  mydata_weight <- rbind(mydata_weight,w)
 }
 mydata_inf <- data.frame(mydata_inf,row.names = NULL)
 mydata_inf <- cbind("Species"=species_list,mydata_inf)
@@ -81,6 +84,8 @@ mydata_sup <- data.frame(mydata_sup,row.names = NULL)
 mydata_sup <- cbind("Species"=species_list,mydata_sup)
 mydata_mean <- data.frame(mydata_mean,row.names = NULL)
 mydata_mean <- cbind("Species"=species_list,mydata_mean)
+mydata_weight <- data.frame(mydata_weight,row.names = NULL)
+mydata_weight <- cbind("Species"=species_list,mydata_weight)
 
 #mydata <- mydata[-6]
 # for(FILE in list.files(path = "outputs/recombination/hordeum/",pattern = "Results_BSfit_FixedFis_filter300") ){
@@ -88,6 +93,7 @@ mydata_mean <- cbind("Species"=species_list,mydata_mean)
 # }
 # Replace T_boeticum by T_monococcum so also change species list
 
+df_fitted <- rbind(mydata_mean$piS_est,mydata_inf$piS_est,mydata_sup$piS_est,mydata_weight$piS_est)
 
 mydata$Species <- ifelse(mydata$Species=="T_boeticum","T_monococcum",mydata$Species)
 mydata$spcode <- spcode[match(mydata$Species,species_list)]
@@ -105,7 +111,7 @@ plot(x,y,
      xlab="", ylab=expression(italic(pi)[S]~(log[10]~scale)), 
      xlim= c(min(x)-0.15, max(x)+0.15), 
      ylim = c(0.1*min(y),max(y)*1.5),
-    # log="y",
+    log="y",
      pch=18, cex.lab= 1.4,
      col=mycol) 
 plotCI(x,y, li=pi_inf, ui=pi_sup, add=T,

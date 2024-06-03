@@ -62,9 +62,9 @@ species_list_abrev <- c(
   
   Ncat <- 20
   
-  pdf(file = "figures/sup_mat/piS_piNpiS_vs_rec.pdf", height = 14, width= 14, pointsize = 18)
+  pdf(file = "figures/main/piS_piNpiS_vs_rec.pdf", height = 8, width= 12, pointsize = 18)
   
-  layout(matrix(c(1,3,2,4),ncol=2))
+  layout(matrix(c(1,2),ncol=2))
   
   plot(NULL,xlim=c(0.01,1.8),ylim=c(0,0.05),xlab= "Recombination rate",ylab=expression(italic(pi)[S]))
   
@@ -184,7 +184,14 @@ species_list_abrev <- c(
     ratio <-  max(mydataWindow$f0,na.rm = T)/(min(mydataWindow[mydataWindow$f0>0,]$f0,na.rm = T))
     text(x=1.45,y=taby[SP],pos = 4, col=mycol[SP],labels = paste(species_list_abrev[SP],round(ratio,2),sep=" : "),cex=0.7)
   }
-
+  
+  dev.off()
+  
+  
+  
+  #pdf(file = "figures/sup_mat/Ds_vs_rec.pdf", height = 8, width = 8, pointsize = 18)
+  
+  jpeg(file = "figures/sup_mat/Ds_vs_rec.jpeg", height = 800, width = 800, pointsize = 18)
   plot(NULL,xlim=c(0.01,1.5),ylim=c(0.7,1.4),xlab= "Recombination rate",ylab=expression("Relative "*italic(D)[S]))
   
   taby <- seq(1.38,1.05,-0.025)

@@ -528,157 +528,259 @@ dev.off()
 
 # 5) Correlation with linked selection parameters ####
 
-#### After fitting a logistic curve on the relationship between polymorphism and recombination, we can extract two useful statistics: the slope of the relationship between polymorphism and recombination at the inflexion point (the lowest the slope, the strongest the linked selection effects), and the maximum polymorphism that could be reached for free recombination.
+#### Plot of the maximum _$\pi[S]$_ obtained from the fit of the lonked selection model
 
-#### **Synonymous polymorphism maximum _$\pi[S]$_**
 pc1 <- pca_individuals$li[,1]
 #sps <- as.character(aeg$species)
 pc1_mean <- tapply(pc1,aeg$species, mean)
 corr <-  match(species,row.names(polym))
-layout(matrix(c(1,2,3,4),ncol=2))
+#layout(matrix(c(1,2,3,4),ncol=2))
 # pi_max/piS
 x <- pc1_mean
-y <- polym$Ratio_piS_piMax[corr]
-plot(x,y, xlab="PC1",ylab=expression(italic(pi)[max]*"/"*italic(pi)[S]), xlim= c(min(x)-0.15, max(x)+0.15), ylim = c(1,6.5), pch=18, cex=1.4, col=mycol[match(species,aeg$species)]) #, yaxt="n")
-plotCI(x,y, li=polym$Ratio_piS_piMax_inf[corr], ui=polym$Ratio_piS_piMax_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
-abline(lm(y ~ x), lty=2, lwd=1.5)
-R2 <- summary(lm(y ~ x))$adj.r.squared
+y <- polym$piMax_fitted[corr]
+plot(x,y,
+     xlab="PC1",
+     ylab=expression(italic(pi)[max]),
+     xlim=c(min(x)-0.15, max(x)+0.15),
+     ylim=c(min(y)*0.3,max(y)*1.5),
+     pch=18, cex=1.4,
+     log="y",
+     col=mycol[match(species,aeg$species)]) #, yaxt="n")
+plotCI(x,y, li=polym$piMax_fitted_inf[corr], ui=polym$piMax_fitted_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
+abline(lm(log10(y) ~ x), lty=2, lwd=1.5)
+R2 <- summary(lm(log10(y) ~ x))$r.squared
 # To get the R2 of the pic regression
 names(x) <- sort(newlabels)
 names(y) <- sort(newlabels)
 x.pic <- pic(x,tree)
 y.pic <- pic(y,tree)
-# The variance of contrasts can be obtained from the pic function. The variance depends of branch length
-#w.pic <- 1/pic(y,tree,var.contrasts = T)[,2]
-w.pic <- NULL # unweighted regression
-# Note that the regression with contrast must be forced to pass through the origin
-R2.pic <- summary(lm(y.pic~x.pic-1, weights = w.pic))$r.squared
-text(x=x-0.3, y=y+0.05, labels=species, cex=0.8,col=mycol[match(species,aeg$species)]) 
-legend(x=min(x)-0.5,y=6.5, legend = bquote(R^2 == .(round(R2,2))~"**"), bty = "n",cex=1.4)
-legend(min(x)-0.5,y=5.7, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"**)"), bty = "n")
-# Slope
-x <- pc1_mean
-y <- polym$Slope_rec_piS[corr]
-plot(x,y, xlab="PC1",ylab="Slope", xlim= c(min(x)-0.15, max(x)+0.15), ylim = c(0, 0.06),
-     pch=18, cex=1.4, col=mycol[match(species,aeg$species)]) #, yaxt="n")
-plotCI(x,y, li=polym$Slope_rec_piS_inf[corr], ui=polym$Slope_rec_piS_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
-abline(lm(y ~ x), lty=2, lwd=1.5)
-R2 <- summary(lm(y ~ x))$adj.r.squared
-# To get the R2 of the pic regression
-names(x) <- sort(newlabels)
-names(y) <- sort(newlabels)
-x.pic <- pic(x,tree)
-y.pic <- pic(y,tree)
-# The variance of contrasts can be obtained from the pic function. The variance depends of branch length
-#w.pic <- 1/pic(y,tree,var.contrasts = T)[,2]
-w.pic <- NULL # unweighted regression
-# Note that the regression with contrast must be forced to pass through the origin
-R2.pic <- summary(lm(y.pic~x.pic-1, weights = w.pic))$r.squared
-text(x=x+0.25, y=y+0.002, labels=species, cex=0.8,col=mycol[match(species,aeg$species)]) 
-legend(x=-4,y=0.06, legend = bquote(R^2 == .(round(R2,2))~"***"), bty = "n",cex=1.4)
-legend(x=-4,y=0.0525, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"***)"), bty = "n")
-# pi_max
-x <- pc1_mean
-y <- polym$Max_piS[corr]
-plot(x,y, xlab="PC1",ylab=expression(italic(pi)[max]*"/"*italic(pi)[S]), xlim= c(min(x)-0.15, max(x)+0.15), ylim = c(0,0.05), pch=18, cex=1.4, col=mycol[match(species,aeg$species)]) #, yaxt="n")
-plotCI(x,y, li=polym$Max_piS_inf[corr], ui=polym$Max_piS_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
-abline(lm(y ~ x), lty=2, lwd=1.5)
-R2 <- summary(lm(y ~ x))$adj.r.squared
-# To get the R2 of the pic regression
-names(x) <- sort(newlabels)
-names(y) <- sort(newlabels)
-x.pic <- pic(x,tree)
-y.pic <- pic(y,tree)
-# The variance of contrasts can be obtained from the pic function. The variance depends of branch length
-#w.pic <- 1/pic(y,tree,var.contrasts = T)[,2]
-w.pic <- NULL # unweighted regression
-# Note that the regression with contrast must be forced to pass through the origin
-R2.pic <- summary(lm(y.pic~x.pic-1, weights = w.pic))$r.squared
-text(x=x-0.3, y=y+0.05, labels=species, cex=0.8,col=mycol[match(species,aeg$species)]) 
-legend(x=min(x)-0.5,y=0.05, legend = bquote(R^2 == .(round(R2,2))~"**"), bty = "n",cex=1.4)
-legend(min(x)-0.5,y=0.043, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"**)"), bty = "n")
 
 # Figure export
-pdf(file="figures/main/LinkedSelection_pc1_final_palette.pdf", height = 15, width= 8, pointsize = 18)
+pdf(file="figures/main/LinkedSelection_pc1_final_palette.pdf", height = 6, width = 14, pointsize = 18)
+layout(matrix(c(1,2),ncol=2))
 pc1 <- pca_individuals$li[,1]
 #sps <- as.character(aeg$species)
 pc1_mean <- tapply(pc1,aeg$species, mean)
 corr <-  match(species,row.names(polym))
-layout(matrix(c(1,2),ncol=1))
+#layout(matrix(c(1,2,3,4),ncol=2))
 # pi_max/piS
-op <- par(mar = c(2,4.5,2,1))
 x <- pc1_mean
-y <- polym$Ratio_piS_piMax[corr]
-plot(x,y, xlab="PC1",ylab=expression(italic(pi)[max]*"/"*italic(pi)[S]), xlim= c(min(x)-0.15, max(x)+0.15), ylim = c(1,6), pch=18, cex=1.4, cex.lab=1.4, col=mycol[match(species,aeg$species)]) #, yaxt="n")
-plotCI(x,y, li=polym$Ratio_piS_piMax_inf[corr], ui=polym$Ratio_piS_piMax_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
-abline(lm(y ~ x), lty=2, lwd=1.5)
-R2 <- summary(lm(y ~ x))$adj.r.squared
+y <- polym$piMax_fitted[corr]
+plot(x,y,
+     xlab="PC1",
+     ylab=expression(italic(pi)[max]),
+     xlim=c(min(x)-0.15, max(x)+0.15),
+     ylim=c(min(y)*0.3,max(y)*1.5),
+     pch=18, cex=1.4,cex.lab=1.2,
+     log="y",
+     col=mycol[match(species,aeg$species)]) #, yaxt="n")
+plotCI(x,y, li=polym$piMax_fitted_inf[corr], ui=polym$piMax_fitted_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
+abline(lm(log10(y) ~ x), lty=2, lwd=1.5)
+R2 <- summary(lm(log10(y) ~ x))$r.squared
 # To get the R2 of the pic regression
 names(x) <- sort(newlabels)
 names(y) <- sort(newlabels)
 x.pic <- pic(x,tree)
-y.pic <- pic(y,tree)
+y.pic <- pic(log(y),tree)
 # The variance of contrasts can be obtained from the pic function. The variance depends of branch length
 #w.pic <- 1/pic(y,tree,var.contrasts = T)[,2]
 w.pic <- NULL # unweighted regression
 # Note that the regression with contrast must be forced to pass through the origin
 R2.pic <- summary(lm(y.pic~x.pic-1, weights = w.pic))$r.squared
 #text(x=x-0.3, y=y+0.05, labels=species, cex=0.8,col=mycol[match(species,aeg$species)]) 
-text(x=x[-c(5,12,13)] - 0.35, y=y[-c(5,12,13)], labels=species[-c(5,12,13)], cex=1.2, col=mycol[match(species[-c(5,12,13)],aeg$species_code)]) # labels on the left
-text(x=x[c(5,12,13)] + 0.35, y=y[c(5,12,13)], labels=species[c(5,12,13)], cex=1.2, col=mycol[match(species[c(5,12,13)],aeg$species_code)]) # labels on the right
-legend(x=min(x)-0.5,y=6.3, legend = bquote(R^2 == .(round(R2,2))~"**"), bty = "n",cex=1.4)
-legend(min(x)-0.5,y=5.7, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"**)"), bty = "n")
-# Slope
-op <- par(mar = c(4,4.5,2,1))
-x <- pc1_mean
-y <- polym$Slope_rec_piS[corr]
-plot(x,y, xlab="PC1",ylab="Slope", xlim= c(min(x)-0.15, max(x)+0.15), ylim = c(0, 0.045),
-     pch=18, cex=1.4, cex.lab=1.4, col=mycol[match(species,aeg$species)]) #, yaxt="n")
-plotCI(x,y, li=polym$Slope_rec_piS_inf[corr], ui=polym$Slope_rec_piS_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
-abline(lm(y ~ x), lty=2, lwd=1.5)
-R2 <- summary(lm(y ~ x))$adj.r.squared
+text(x=x[-c(5,12,13)] - 0.35, y=y[-c(5,12,13)], labels=species[-c(5,12,13)], cex=0.8, col=mycol[match(species[-c(5,12,13)],aeg$species_code)]) # labels on the left
+text(x=x[c(5,12,13)] + 0.35, y=y[c(5,12,13)], labels=species[c(5,12,13)], cex=0.8, col=mycol[match(species[c(5,12,13)],aeg$species_code)]) # labels on the right
+legend(x=min(x)-0.6,y=3, legend = bquote(R^2 == .(round(R2,3))), bty = "n",cex=1)
+legend(min(x)-0.6,y=1.5, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,3))~")"), cex=0.8,bty = "n")
+
+corr <-  match(species,row.names(polym))
+#layout(matrix(c(1,2,3,4),ncol=2))
+# pi_max/piS
+x <- polym$Species_range_grid_1.0[corr]
+y <- polym$piMax_fitted[corr]
+plot(x,y,
+     xlab="Species range (in 1000 km2)",
+     ylab=expression(italic(pi)[max]),
+     xlim=c(min(x)-0.15, max(x)+0.15),
+     ylim=c(min(y)*0.3,max(y)*1.5),
+     pch=18, cex=1.4, cex.lab=1.2,
+     log="xy",
+     col=mycol[match(species,aeg$species)]) #, yaxt="n")
+plotCI(x,y, li=polym$piMax_fitted_inf[corr], ui=polym$piMax_fitted_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
+abline(lm(log10(y) ~ log10(x)), lty=2, lwd=1.5)
+R2 <- summary(lm(log10(y) ~ log10(x)))$r.squared
 # To get the R2 of the pic regression
 names(x) <- sort(newlabels)
 names(y) <- sort(newlabels)
-x.pic <- pic(x,tree)
-y.pic <- pic(y,tree)
+x.pic <- pic(log(x),tree)
+y.pic <- pic(log(y),tree)
 # The variance of contrasts can be obtained from the pic function. The variance depends of branch length
 #w.pic <- 1/pic(y,tree,var.contrasts = T)[,2]
 w.pic <- NULL # unweighted regression
 # Note that the regression with contrast must be forced to pass through the origin
 R2.pic <- summary(lm(y.pic~x.pic-1, weights = w.pic))$r.squared
-text(x=x[-c(1,2,6,9:11,13)]+0.35, y=y[-c(1,2,6,9:11,13)]+0.002, labels=species[-c(1,2,6,9:11,13)], cex=1.2,col=mycol[match(species[-c(1,2,6,9:11,13)],aeg$species)]) 
-text(x=x[c(1,2,6,10)] - 0.4, y=y[c(1,2,6,10)], labels=species[c(1,2,6,10)], cex=1.2, col=mycol[match(species[c(1,2,6,10)],aeg$species_code)]) # labels on the left
-text(x=x[c(13)], y=y[c(13)]- 0.002, labels=species[c(13)], cex=1.2, col=mycol[match(species[c(13)],aeg$species_code)]) # Tur below
-text(x=x[c(11)], y=y[c(11)]+ 0.002, labels=species[c(11)], cex=1.2, col=mycol[match(species[c(11)],aeg$species_code)]) # Aun above
-text(x=x[c(9)]-0.2, y=y[c(9)]+ 0.002, labels=species[c(9)], cex=1.2, col=mycol[match(species[c(9)],aeg$species_code)]) # Ata, left-above
-legend(x=-4.5,y=0.008, legend = bquote(R^2 == .(round(R2,2))~"***"), bty = "n",cex=1.4)
-legend(x=-4.5,y=0.003, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"***)"), bty = "n")
-#text(x=x[c(2:5,11)], y=y[c(2:5,11)] + 0.07, labels=species[c(2:5,11)], cex=1.2,
-#     col=mycol[match(species[c(2:5,11)],aeg$species_code)]) # labels on top
-#legend(min(x)-0.5, y=max(y)-1.05, legend = bquote(R^2 == .(round(R2,2))~"***"), bty = "n", cex=1.4)
-#legend(min(x)-0.5, y=max(y)-1.2, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"***)"), bty = "n", cex=1) # with independent contrast correction
+#text(x=x-0.3, y=y+0.05, labels=species, cex=0.8,col=mycol[match(species,aeg$species)]) 
+text(x=x[-c(5,12,13)] - 0.35, y=y[-c(5,12,13)], labels=species[-c(5,12,13)], cex=0.8, col=mycol[match(species[-c(5,12,13)],aeg$species_code)]) # labels on the left
+text(x=x[c(5,12,13)] + 0.35, y=y[c(5,12,13)], labels=species[c(5,12,13)], cex=0.8, col=mycol[match(species[c(5,12,13)],aeg$species_code)]) # labels on the right
+legend(x=150,y=5, legend = bquote(R^2 == .(round(R2,2))~"**"), bty = "n",cex=1)
+legend(x=150,y=2.5, legend = bquote("(With phylogenetic"), cex=0.8,bty = "n")
+legend(x=150,y=1.5, legend = bquote("correction"~R^2 == .(round(R2.pic,2))~")"), cex=0.8,bty = "n")
+
 dev.off()
 
-pdf(file="figures/sup_mat/Suppl_Figure_Sxx_pimax_vs_pc1.pdf", height = 8, width= 12, pointsize = 18)
-op <- par(mar = c(4,4.5,2,1))
-x <- pc1_mean
-y <- polym$Max_piS[corr]
-plot(x,y, xlab="PC1",ylab=expression(italic(pi)[max]), xlim= c(min(x)-0.15, max(x)+0.15), ylim = c(0,0.05), pch=18, cex=1.4, col=mycol[match(species,aeg$species)]) #, yaxt="n")
-plotCI(x,y, li=polym$Max_piS_inf[corr], ui=polym$Max_piS_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
-abline(lm(y ~ x), lty=2, lwd=1.5)
-R2 <- summary(lm(y ~ x))$adj.r.squared
-# To get the R2 of the pic regression
-names(x) <- sort(newlabels)
-names(y) <- sort(newlabels)
-x.pic <- pic(x,tree)
-y.pic <- pic(y,tree)
-# The variance of contrasts can be obtained from the pic function. The variance depends of branch length
-#w.pic <- 1/pic(y,tree,var.contrasts = T)[,2]
-w.pic <- NULL # unweighted regression
-# Note that the regression with contrast must be forced to pass through the origin
-R2.pic <- summary(lm(y.pic~x.pic-1, weights = w.pic))$r.squared
-text(x=x-0.3, y=y+0.05, labels=species, cex=0.8,col=mycol[match(species,aeg$species)]) 
-legend(x=min(x)-0.5,y=0.05, legend = bquote(R^2 == .(round(R2,2))~"**"), bty = "n",cex=1.4)
-legend(min(x)-0.5,y=0.043, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"**)"), bty = "n")
-dev.off()
+
+
+# #### After fitting a logistic curve on the relationship between polymorphism and recombination, we can extract two useful statistics: the slope of the relationship between polymorphism and recombination at the inflexion point (the lowest the slope, the strongest the linked selection effects), and the maximum polymorphism that could be reached for free recombination.
+# 
+# #### **Synonymous polymorphism maximum _$\pi[S]$_**
+# pc1 <- pca_individuals$li[,1]
+# #sps <- as.character(aeg$species)
+# pc1_mean <- tapply(pc1,aeg$species, mean)
+# corr <-  match(species,row.names(polym))
+# layout(matrix(c(1,2,3,4),ncol=2))
+# # pi_max/piS
+# x <- pc1_mean
+# y <- polym$Ratio_piS_piMax[corr]
+# plot(x,y, xlab="PC1",ylab=expression(italic(pi)[max]*"/"*italic(pi)[S]), xlim= c(min(x)-0.15, max(x)+0.15), ylim = c(1,6.5), pch=18, cex=1.4, col=mycol[match(species,aeg$species)]) #, yaxt="n")
+# plotCI(x,y, li=polym$Ratio_piS_piMax_inf[corr], ui=polym$Ratio_piS_piMax_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
+# abline(lm(y ~ x), lty=2, lwd=1.5)
+# R2 <- summary(lm(y ~ x))$adj.r.squared
+# # To get the R2 of the pic regression
+# names(x) <- sort(newlabels)
+# names(y) <- sort(newlabels)
+# x.pic <- pic(x,tree)
+# y.pic <- pic(y,tree)
+# # The variance of contrasts can be obtained from the pic function. The variance depends of branch length
+# #w.pic <- 1/pic(y,tree,var.contrasts = T)[,2]
+# w.pic <- NULL # unweighted regression
+# # Note that the regression with contrast must be forced to pass through the origin
+# R2.pic <- summary(lm(y.pic~x.pic-1, weights = w.pic))$r.squared
+# text(x=x-0.3, y=y+0.05, labels=species, cex=0.8,col=mycol[match(species,aeg$species)]) 
+# legend(x=min(x)-0.5,y=6.5, legend = bquote(R^2 == .(round(R2,2))~"**"), bty = "n",cex=1.4)
+# legend(min(x)-0.5,y=5.7, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"**)"), bty = "n")
+# # Slope
+# x <- pc1_mean
+# y <- polym$Slope_rec_piS[corr]
+# plot(x,y, xlab="PC1",ylab="Slope", xlim= c(min(x)-0.15, max(x)+0.15), ylim = c(0, 0.06),
+#      pch=18, cex=1.4, col=mycol[match(species,aeg$species)]) #, yaxt="n")
+# plotCI(x,y, li=polym$Slope_rec_piS_inf[corr], ui=polym$Slope_rec_piS_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
+# abline(lm(y ~ x), lty=2, lwd=1.5)
+# R2 <- summary(lm(y ~ x))$adj.r.squared
+# # To get the R2 of the pic regression
+# names(x) <- sort(newlabels)
+# names(y) <- sort(newlabels)
+# x.pic <- pic(x,tree)
+# y.pic <- pic(y,tree)
+# # The variance of contrasts can be obtained from the pic function. The variance depends of branch length
+# #w.pic <- 1/pic(y,tree,var.contrasts = T)[,2]
+# w.pic <- NULL # unweighted regression
+# # Note that the regression with contrast must be forced to pass through the origin
+# R2.pic <- summary(lm(y.pic~x.pic-1, weights = w.pic))$r.squared
+# text(x=x+0.25, y=y+0.002, labels=species, cex=0.8,col=mycol[match(species,aeg$species)]) 
+# legend(x=-4,y=0.06, legend = bquote(R^2 == .(round(R2,2))~"***"), bty = "n",cex=1.4)
+# legend(x=-4,y=0.0525, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"***)"), bty = "n")
+# # pi_max
+# x <- pc1_mean
+# y <- polym$Max_piS[corr]
+# plot(x,y, xlab="PC1",ylab=expression(italic(pi)[max]*"/"*italic(pi)[S]), xlim= c(min(x)-0.15, max(x)+0.15), ylim = c(0,0.05), pch=18, cex=1.4, col=mycol[match(species,aeg$species)]) #, yaxt="n")
+# plotCI(x,y, li=polym$Max_piS_inf[corr], ui=polym$Max_piS_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
+# abline(lm(y ~ x), lty=2, lwd=1.5)
+# R2 <- summary(lm(y ~ x))$adj.r.squared
+# # To get the R2 of the pic regression
+# names(x) <- sort(newlabels)
+# names(y) <- sort(newlabels)
+# x.pic <- pic(x,tree)
+# y.pic <- pic(y,tree)
+# # The variance of contrasts can be obtained from the pic function. The variance depends of branch length
+# #w.pic <- 1/pic(y,tree,var.contrasts = T)[,2]
+# w.pic <- NULL # unweighted regression
+# # Note that the regression with contrast must be forced to pass through the origin
+# R2.pic <- summary(lm(y.pic~x.pic-1, weights = w.pic))$r.squared
+# text(x=x-0.3, y=y+0.05, labels=species, cex=0.8,col=mycol[match(species,aeg$species)]) 
+# legend(x=min(x)-0.5,y=0.05, legend = bquote(R^2 == .(round(R2,2))~"**"), bty = "n",cex=1.4)
+# legend(min(x)-0.5,y=0.043, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"**)"), bty = "n")
+# 
+# # Figure export
+# pdf(file="figures/main/LinkedSelection_pc1_final_palette.pdf", height = 15, width= 8, pointsize = 18)
+# pc1 <- pca_individuals$li[,1]
+# #sps <- as.character(aeg$species)
+# pc1_mean <- tapply(pc1,aeg$species, mean)
+# corr <-  match(species,row.names(polym))
+# layout(matrix(c(1,2),ncol=1))
+# # pi_max/piS
+# op <- par(mar = c(2,4.5,2,1))
+# x <- pc1_mean
+# y <- polym$Ratio_piS_piMax[corr]
+# plot(x,y, xlab="PC1",ylab=expression(italic(pi)[max]*"/"*italic(pi)[S]), xlim= c(min(x)-0.15, max(x)+0.15), ylim = c(1,6), pch=18, cex=1.4, cex.lab=1.4, col=mycol[match(species,aeg$species)]) #, yaxt="n")
+# plotCI(x,y, li=polym$Ratio_piS_piMax_inf[corr], ui=polym$Ratio_piS_piMax_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
+# abline(lm(y ~ x), lty=2, lwd=1.5)
+# R2 <- summary(lm(y ~ x))$adj.r.squared
+# # To get the R2 of the pic regression
+# names(x) <- sort(newlabels)
+# names(y) <- sort(newlabels)
+# x.pic <- pic(x,tree)
+# y.pic <- pic(y,tree)
+# # The variance of contrasts can be obtained from the pic function. The variance depends of branch length
+# #w.pic <- 1/pic(y,tree,var.contrasts = T)[,2]
+# w.pic <- NULL # unweighted regression
+# # Note that the regression with contrast must be forced to pass through the origin
+# R2.pic <- summary(lm(y.pic~x.pic-1, weights = w.pic))$r.squared
+# #text(x=x-0.3, y=y+0.05, labels=species, cex=0.8,col=mycol[match(species,aeg$species)]) 
+# text(x=x[-c(5,12,13)] - 0.35, y=y[-c(5,12,13)], labels=species[-c(5,12,13)], cex=1.2, col=mycol[match(species[-c(5,12,13)],aeg$species_code)]) # labels on the left
+# text(x=x[c(5,12,13)] + 0.35, y=y[c(5,12,13)], labels=species[c(5,12,13)], cex=1.2, col=mycol[match(species[c(5,12,13)],aeg$species_code)]) # labels on the right
+# legend(x=min(x)-0.5,y=6.3, legend = bquote(R^2 == .(round(R2,2))~"**"), bty = "n",cex=1.4)
+# legend(min(x)-0.5,y=5.7, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"**)"), bty = "n")
+# # Slope
+# op <- par(mar = c(4,4.5,2,1))
+# x <- pc1_mean
+# y <- polym$Slope_rec_piS[corr]
+# plot(x,y, xlab="PC1",ylab="Slope", xlim= c(min(x)-0.15, max(x)+0.15), ylim = c(0, 0.045),
+#      pch=18, cex=1.4, cex.lab=1.4, col=mycol[match(species,aeg$species)]) #, yaxt="n")
+# plotCI(x,y, li=polym$Slope_rec_piS_inf[corr], ui=polym$Slope_rec_piS_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
+# abline(lm(y ~ x), lty=2, lwd=1.5)
+# R2 <- summary(lm(y ~ x))$adj.r.squared
+# # To get the R2 of the pic regression
+# names(x) <- sort(newlabels)
+# names(y) <- sort(newlabels)
+# x.pic <- pic(x,tree)
+# y.pic <- pic(y,tree)
+# # The variance of contrasts can be obtained from the pic function. The variance depends of branch length
+# #w.pic <- 1/pic(y,tree,var.contrasts = T)[,2]
+# w.pic <- NULL # unweighted regression
+# # Note that the regression with contrast must be forced to pass through the origin
+# R2.pic <- summary(lm(y.pic~x.pic-1, weights = w.pic))$r.squared
+# text(x=x[-c(1,2,6,9:11,13)]+0.35, y=y[-c(1,2,6,9:11,13)]+0.002, labels=species[-c(1,2,6,9:11,13)], cex=1.2,col=mycol[match(species[-c(1,2,6,9:11,13)],aeg$species)]) 
+# text(x=x[c(1,2,6,10)] - 0.4, y=y[c(1,2,6,10)], labels=species[c(1,2,6,10)], cex=1.2, col=mycol[match(species[c(1,2,6,10)],aeg$species_code)]) # labels on the left
+# text(x=x[c(13)], y=y[c(13)]- 0.002, labels=species[c(13)], cex=1.2, col=mycol[match(species[c(13)],aeg$species_code)]) # Tur below
+# text(x=x[c(11)], y=y[c(11)]+ 0.002, labels=species[c(11)], cex=1.2, col=mycol[match(species[c(11)],aeg$species_code)]) # Aun above
+# text(x=x[c(9)]-0.2, y=y[c(9)]+ 0.002, labels=species[c(9)], cex=1.2, col=mycol[match(species[c(9)],aeg$species_code)]) # Ata, left-above
+# legend(x=-4.5,y=0.008, legend = bquote(R^2 == .(round(R2,2))~"***"), bty = "n",cex=1.4)
+# legend(x=-4.5,y=0.003, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"***)"), bty = "n")
+# #text(x=x[c(2:5,11)], y=y[c(2:5,11)] + 0.07, labels=species[c(2:5,11)], cex=1.2,
+# #     col=mycol[match(species[c(2:5,11)],aeg$species_code)]) # labels on top
+# #legend(min(x)-0.5, y=max(y)-1.05, legend = bquote(R^2 == .(round(R2,2))~"***"), bty = "n", cex=1.4)
+# #legend(min(x)-0.5, y=max(y)-1.2, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"***)"), bty = "n", cex=1) # with independent contrast correction
+# dev.off()
+# 
+# pdf(file="figures/sup_mat/Suppl_Figure_Sxx_pimax_vs_pc1.pdf", height = 8, width= 12, pointsize = 18)
+# op <- par(mar = c(4,4.5,2,1))
+# x <- pc1_mean
+# y <- polym$Max_piS[corr]
+# plot(x,y, xlab="PC1",ylab=expression(italic(pi)[max]), xlim= c(min(x)-0.15, max(x)+0.15), ylim = c(0,0.05), pch=18, cex=1.4, col=mycol[match(species,aeg$species)]) #, yaxt="n")
+# plotCI(x,y, li=polym$Max_piS_inf[corr], ui=polym$Max_piS_sup[corr], add=T, col=mycol[match(species,aeg$species_code)], pch=18, cex=1, lwd=2)
+# abline(lm(y ~ x), lty=2, lwd=1.5)
+# R2 <- summary(lm(y ~ x))$adj.r.squared
+# # To get the R2 of the pic regression
+# names(x) <- sort(newlabels)
+# names(y) <- sort(newlabels)
+# x.pic <- pic(x,tree)
+# y.pic <- pic(y,tree)
+# # The variance of contrasts can be obtained from the pic function. The variance depends of branch length
+# #w.pic <- 1/pic(y,tree,var.contrasts = T)[,2]
+# w.pic <- NULL # unweighted regression
+# # Note that the regression with contrast must be forced to pass through the origin
+# R2.pic <- summary(lm(y.pic~x.pic-1, weights = w.pic))$r.squared
+# text(x=x-0.3, y=y+0.05, labels=species, cex=0.8,col=mycol[match(species,aeg$species)]) 
+# legend(x=min(x)-0.5,y=0.05, legend = bquote(R^2 == .(round(R2,2))~"**"), bty = "n",cex=1.4)
+# legend(min(x)-0.5,y=0.043, legend = bquote("(With phylogenetic correction"~R^2 == .(round(R2.pic,2))~"**)"), bty = "n")
+# dev.off()

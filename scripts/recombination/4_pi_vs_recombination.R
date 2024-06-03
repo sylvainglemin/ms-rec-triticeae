@@ -32,11 +32,10 @@ species_list <- c(
 
 Ncat <- 100
 result <- c()
-for(SP in species_list) {
+for(SPECIES in species_list) {
   
   # Choice of the species
-  # SP <-8 # example
-  SPECIES <- SP
+  # SPECIES <- species_list[5]
   
   if(SPECIES=="T_boeticum") {
     data_focal <- read.table(paste("outputs/orthology/hordeum/",SPECIES,"_Hordeum_ds.txt",sep=""),header=F,sep ="",fill=T)
